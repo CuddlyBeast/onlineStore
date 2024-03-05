@@ -1,0 +1,19 @@
+{
+  "name": "onlinestore",
+  "version": "1.0.0",
+  "description": "e-commerce website front and backend",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CuddlyBeast/onlineStore.git"
+  },
+  "author": "Jonathan Cuddy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CuddlyBeast/onlineStore/issues"
+  },
+  "homepage": "https://github.com/CuddlyBeast/onlineStore#readme"
+}
