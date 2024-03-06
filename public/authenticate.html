@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-up And Sign-in</title>
+    <link rel="stylesheet" href="authenticate.css">
+</head>
+<body>
+    <div class="hero">
+
+        <div class="wrapper">
+            <div class="form-box login">
+                <h2>Login</h2>
+                <form action="#" id="login-form" action="https://localhost:3000/api/signin" method="POST">
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
+                        <input type="email" name="email" id="email" required>
+                        <label>Email</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+                        <input type="password" name="password" id="password" required>
+                        <label>Password</label>
+                    </div>
+                    <div class="remember-forgot">
+                        <label><input type="checkbox">Remember me</label>
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn">Login</button>
+                    <div id="registration-message"></div>
+                    <div class="login-register">
+                        <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                        <a href="index.html" class="return-button"><ion-icon name="storefront-outline"></ion-icon>Return</a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="form-box register">
+                <h2>Registration</h2>
+                <form action="#" id="registration-form" action="https://localhost:3000/api/signup" method="POST">
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+                        <input type="text" name="name" required>
+                        <label>Username</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
+                        <input type="email" name="email" required>
+                        <label>Email</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+                        <input type="password" name="password" required>
+                        <label>Password</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="phone-portrait-outline"></ion-icon></span>
+                        <input type="tel" name="mobile" required>
+                        <label>Mobile</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        <input type="text" name="address" required>
+                        <label>Address</label>
+                    </div>
+                    <!-- <div class="input-box">
+                        <span class="icon"><ion-icon name="card-outline"></ion-icon></span>
+                        <input type="text" name="payment_method" required>
+                        <label>Payment</label>
+                    </div> -->
+                    <div class="remember-forgot">
+                        <label><input type="checkbox" required>I agree to the terms & conditions</label>
+                    </div>
+                    <button type="submit" class="btn">Register</button>
+                    <div id="registration-message"></div>
+                    <div class="login-register">
+                        <p>Already have an account? <a href="#" class="login-link">Login</a></p>
+                        <a href="index.html" class="return-button"><ion-icon name="storefront-outline"></ion-icon>Return</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="https://kit.fontawesome.com/bee36ef8ad.js" crossorigin="anonymous"></script>
+<script src="authenticate.js"></script>
+</body>
+</html>
