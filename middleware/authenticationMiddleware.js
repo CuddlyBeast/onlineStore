@@ -11,14 +11,14 @@ const authenticateCustomer = async (req, res, next) => {
 
   try {
     const decodedToken = jwt.verify(token, 'hkdlspairjtmchswgqusdfpgkwpdfu');
-    const user = await Customer.findByPk(decodedToken.id); 
+    const customer = await Customer.findByPk(decodedToken.id); 
   
 
-    if (!user) {
-      return res.status(401).json({ error: 'Unauthorized - Invalid user' });
+    if (!customer) {
+      return res.status(401).json({ error: 'Unauthorized - Invalid customer' });
     }
 
-    req.user = user;
+    req.customer = customer;
     next();
   } catch (error) {
     console.error(error);
