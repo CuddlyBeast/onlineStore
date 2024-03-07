@@ -36,4 +36,17 @@ router.post("/order/:id/details", authenticateCustomer, async (req, res) => {
     }
 });
 
+// Order History~ Get All The Order Details For Each Individual Order To Populate The Page With Information (maybe they can click into order to get more info or a slider/read more function)
+router.get("/order/:id/details", authenticateCustomer,  async (req, res) => {
+    try {
+        const customerId = req.customer.id;
+        const orderId = req.params;
+        
+        const orderDetails = await OrderDetail.findAll({ where: { customer_id: customerId, orderId: orderId } });
+        res.send(orderDetails);
+    } catch (error) {
+        res.status(500).send({ error: "Internal Server Error" })
+    }
+  });
+
 module.exports = router;

@@ -3,8 +3,10 @@ const session = require("express-session");
 const helmet = require("helmet");
 const cors = require("cors");
 const path = require("path");
-authRoutes = require("./routes/authRoutes");
-productRoutes = require("./routes/productRoutes");
+const authRoutes = require("./routes/authRoutes");
+const productRoutes = require("./routes/productRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const orderDetailRoutes = require("./routes/orderDetailRoutes");
 
 require("dotenv").config();
 
@@ -57,6 +59,8 @@ app.get('/cart', (req, res, next) => {
 
 app.use('/cuddy', authRoutes);
 app.use('/cuddy', productRoutes);
+app.use('/cuddy', orderRoutes);
+app.use('/cuddy', orderDetailRoutes);
 
 
 app.use((err, req, res, next) => {

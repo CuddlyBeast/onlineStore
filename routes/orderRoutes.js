@@ -56,7 +56,7 @@ router.get("/orders/:id", authenticateCustomer, async (req, res) => {
     }
 })
 
-// View All Orders for a Specific Customer
+// Order History~ View All Orders for a Specific Customer
 router.get("/order/history", authenticateCustomer, async (req, res) => {
     try {
         const customerId = req.customer.id;
@@ -67,21 +67,49 @@ router.get("/order/history", authenticateCustomer, async (req, res) => {
     }
 })
 
-// Delete Order
-router.delete("/order/delete/:id", authenticateCustomer, async (req, res) => {
+// Order History~ Delete Specific Order During Grace Period
+router.delete("/order/:id", authenticateCustomer, async (req, res) => {
     try {
         const order = req.params.id;
         const customerId = req.customer.id
 
-        if (!validator.isInt(order, { min: 1 })) {
-            return res.status(400).send({ error: 'Invalid order ID'});
+        if (!validator.isInt(customerId, { min: 1 })) {
+            return res.status(400).send({ error: 'Invalid customer ID. Must be a positive integer'});
           }
         
-        Order.destroy({ where: { customer_id: customerId }});
+        Order.destroy({ where: { customer_id: customerId, id: order }});
         res.send({ message: `Order number ${order} has been deleted.`});
     } catch (error) {
         res.status(500).send({ error: "Internal Server Error" });
     }
 })
+
+// Order History~ Update Order Information (Change Status)
+router.put("/order/:id", authenticateCustomer,  async (req, res) => {
+    try {
+        
+        const { orderStatus } = req.body
+        const customerId = req.customer.id;
+        
+        // Or const [_, [updatedOrder]] instead of newOrder to show all of the order info to user in response. _ placeholder to ignore the number of rows affected from the destructured Order.update
+        const newOrder = await Order.update({
+        orderStatus
+        }, {
+          where: {
+           id: customerId 
+          },
+          returning: true
+        })
+  
+        res.send({
+          message: "Order Information Updated!",
+          Order: {
+            orderStatus: newOrder.orderStatus
+            }
+        })
+    } catch (error) {
+        res.status(500).send({ error: "Internal Server Error" })
+    }
+  });
 
 module.exports = router;

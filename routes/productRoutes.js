@@ -106,8 +106,8 @@ router.delete("/product/:id", async (req, res) => {
   try {
       const productId = req.params;
       
-      if (!validator.isInt(order, { min: 1 })) {
-        return res.status(400).send({ error: 'Invalid order ID must be a positive integer'});
+      if (!validator.isInt(productId, { min: 1 })) {
+        return res.status(400).send({ error: 'Invalid product ID. Must be a positive integer'});
       }
       
       Product.destroy({ where: { id: productId } })

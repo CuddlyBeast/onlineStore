@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { Customer } = require('../models');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const { authenticateCustomer } = require("../middleware/authenticationMiddleware")
 
 const router = express.Router();
 
@@ -116,6 +117,58 @@ router.get('/customers/:id', async (req, res) => {
   }
 });
 
+// Profile~ Update Customer Information
+router.put("/profile", authenticateCustomer,  async (req, res) => {
+  try {
+      
+      const { name,	email, address, phoneNumber, paymentInformation } = req.body
+      const customerId = req.customer.id;
+
+      const newProduct = await Customer.update({
+        name,
+        email,
+        address,
+        phoneNumber,
+        paymentInformation
+      }, {
+        where: {
+         id: customerId 
+        },
+        returning: true
+      })
+
+      res.send({
+        message: "Customer Information Updated!",
+        Customer: {
+          id: newProduct.id,
+          name: newProduct.name,
+          email: newProduct.email,
+          address: newProduct.address,
+          phoneNumber: newProduct.phoneNumber,
+          paymentInformation: newProduct.paymentInformation,
+          }
+      })
+  } catch (error) {
+      res.status(500).send({ error: "Internal Server Error" })
+  }
+});
+
+// Profile~ Delete Own Profile
+router.delete("/profile/:id", authenticateCustomer, async (req, res) => {
+  try {
+      const customerId = req.customer.id;
+      
+      if (!validator.isInt(customerId, { min: 1 })) {
+        return res.status(400).send({ error: 'Invalid customer ID. Must be a positive integer'});
+      }
+      
+      Product.destroy({ where: { id: customerId } })
+
+      res.send({ message: `Customer with ID:${customerId} has been deleted.` })
+  } catch (error) {
+      res.status(500).send({ error: "Internal Server Error" })
+  }
+});
 
 module.exports = router;
 
