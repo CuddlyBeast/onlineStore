@@ -24,7 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     quantity: DataTypes.INTEGER
   }, {
     sequelize,
+    tableName: 'products',
     modelName: 'Product',
+    timestamps: true, 
   });
   return Product;
 };

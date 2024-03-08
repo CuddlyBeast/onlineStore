@@ -22,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'customer',
+    tableName: 'customers',
+    modelName: 'Customer',
+    timestamps: true,
   });
   return Customer;
 };

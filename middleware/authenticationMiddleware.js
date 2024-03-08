@@ -10,7 +10,7 @@ const authenticateCustomer = async (req, res, next) => {
   }
 
   try {
-    const decodedToken = jwt.verify(token, 'hkdlspairjtmchswgqusdfpgkwpdfu');
+    const decodedToken = jwt.verify(token, 'ssfdsfhccrthghafdethgv');
     const customer = await Customer.findByPk(decodedToken.id); 
   
 

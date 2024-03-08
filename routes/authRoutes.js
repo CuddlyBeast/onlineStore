@@ -48,7 +48,6 @@ router.post('/signup', async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
     res.status(500).send({ error: 'Internal Server Error' });
   }
 });
@@ -58,25 +57,26 @@ router.post('/signin', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const Customer = await Customer.findOne({ where: { email } });
+    const customer = await Customer.findOne({ where: { email } });
 
-    if (!Customer) {
+    if (!customer) {
       return res.status(401).send({ error: 'Invalid email' });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, Customer.password);
+    const isPasswordValid = await bcrypt.compare(password, customer.password);
 
     if (!isPasswordValid) {
       return res.status(401).send({ error: 'Invalid password' });
     }
 
-    const token = jwt.sign({ id: Customer.id }, 'hkdlspairjtmchswgqusdfpgkwpdfu', { expiresIn: '1h' });
+    const token = jwt.sign({ id: customer.id }, 'ssfdsfhccrthghafdethgv', { expiresIn: '1h' });
 
     res.send({
       message: 'Login successful',
       token,
     });
   } catch (error) {
+    console.log(error)
     res.status(500).send({ error: 'Internal Server Error' });
   }
 });

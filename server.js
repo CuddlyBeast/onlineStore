@@ -18,8 +18,8 @@ app.use(cors());
 app.use(helmet.contentSecurityPolicy({
     directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'" , "https://unpkg.com/"],
-        connectSrc: ["'self'" , "https://unpkg.com/"],
+        scriptSrc: ["'self'" , "https://unpkg.com/", "https://kit.fontawesome.com/"],
+        connectSrc: ["'self'" , "https://unpkg.com/", "https://kit.fontawesome.com/"],
     }
 })
 );
@@ -34,27 +34,33 @@ app.use(session({
     store,
 }));
 
+app.use(express.static(path.join(__dirname, "public"))); 
+
 app.get('/', (req, res, next) => {
-    res.sendFile(path.file(__dirname, "public", "index.html"));
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 app.get('/shop', (req, res, next) => {
-    res.sendFile(path.file(__dirname, "public", "shop.html"));
+    res.sendFile(path.join(__dirname, "public", "shop.html"));
 });
 app.get('/product', (req, res, next) => {
-    res.sendFile(path.file(__dirname, "public", "sproduct.html"));
+    res.sendFile(path.join(__dirname, "public", "sproduct.html"));
 });
 app.get('/blog', (req, res, next) => {
-    res.sendFile(path.file(__dirname, "public", "blog.html"));
+    res.sendFile(path.join(__dirname, "public", "blog.html"));
 });
 app.get('/about', (req, res, next) => {
-    res.sendFile(path.file(__dirname, "public", "about.html"));
+    res.sendFile(path.join(__dirname, "public", "about.html"));
 });
 app.get('/contact', (req, res, next) => {
-    res.sendFile(path.file(__dirname, "public", "contact.html"));
+    res.sendFile(path.join(__dirname, "public", "contact.html"));
 });
 app.get('/cart', (req, res, next) => {
-    res.sendFile(path.file(__dirname, "public", "cart.html"));
+    res.sendFile(path.join(__dirname, "public", "cart.html"));
 });
+app.get('/authenticate', (req, res, next) => {
+    res.sendFile(path.join(__dirname, "public", "authenticate.html"));
+});
+
 
 
 app.use('/cuddy', authRoutes);

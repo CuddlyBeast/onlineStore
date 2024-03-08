@@ -8,7 +8,7 @@ const router = express.Router();
 router.post("/order/:id/details", authenticateCustomer, async (req, res) => {
     try {
         const { productId, quantity, price, paymentMethod } = req.body; 
-        const orderId = req.params;
+        const orderId = req.params.id;
         
 
         const newOrderDetails = await OrderDetail.create({
@@ -32,6 +32,7 @@ router.post("/order/:id/details", authenticateCustomer, async (req, res) => {
         })
 
     } catch (error) {
+        console.log(error)
         res.status(500).send({ error: "Internal Server Error" });
     }
 });

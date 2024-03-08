@@ -15,12 +15,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   Order.init({
     customerId: DataTypes.INTEGER,
-    orderDate: DataTypes.DATE,
     totalAmount: DataTypes.DECIMAL,
     orderStatus: DataTypes.STRING
   }, {
     sequelize,
+    tableName: 'orders',
     modelName: 'Order',
+    timestamps: true,
   });
   return Order;
 };

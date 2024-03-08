@@ -13,8 +13,7 @@ router.post("/order", authenticateCustomer, async (req, res) => {
         
 
         const newOrder = await Order.create({
-            customer_id: customerId,
-            orderDate: new Date(),
+            customerId: customerId,
             totalAmount,
             orderStatus,
         });
@@ -23,7 +22,7 @@ router.post("/order", authenticateCustomer, async (req, res) => {
             message: "Order successful",
             Order: {
             id: newOrder.id,
-            customer_id: newOrder.customerId,
+            customerId: newOrder.customerId,
             orderDate: newOrder.orderDate,
             totalAmount: newOrder.totalAmount,
             orderStatus: newOrder.orderStatus,
@@ -60,7 +59,7 @@ router.get("/orders/:id", authenticateCustomer, async (req, res) => {
 router.get("/order/history", authenticateCustomer, async (req, res) => {
     try {
         const customerId = req.customer.id;
-        const orders = await Order.findAll({ where: { customer_id: customerId } });
+        const orders = await Order.findAll({ where: { customerId: customerId } });
         res.send(orders);
     } catch (error) {
         res.status(500).send({ error: "Internal Server Error" })
@@ -77,7 +76,7 @@ router.delete("/order/:id", authenticateCustomer, async (req, res) => {
             return res.status(400).send({ error: 'Invalid customer ID. Must be a positive integer'});
           }
         
-        Order.destroy({ where: { customer_id: customerId, id: order }});
+        Order.destroy({ where: { customerId: customerId, id: order }});
         res.send({ message: `Order number ${order} has been deleted.`});
     } catch (error) {
         res.status(500).send({ error: "Internal Server Error" });

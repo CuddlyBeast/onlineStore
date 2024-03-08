@@ -29,6 +29,7 @@ router.post("/product", async (req, res) => {
   try {
       const { name, description, price,	category,	size,	color, quantity, image } = req.body;
 
+
       const newProduct = await Product.create({
         name,
         description,
@@ -40,7 +41,8 @@ router.post("/product", async (req, res) => {
         image
       })
 
-      res.send({
+
+      res.status(201).send({
         message: "Product creation successful",
         Product: {
         id: newProduct.id,

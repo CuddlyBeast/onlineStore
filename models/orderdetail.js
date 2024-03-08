@@ -22,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     paymentMethod: DataTypes.STRING
   }, {
     sequelize,
+    tableName: 'order_detail',
     modelName: 'OrderDetail',
+    timestamps: true,
   });
   return OrderDetail;
 };
