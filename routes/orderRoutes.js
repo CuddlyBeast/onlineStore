@@ -45,9 +45,9 @@ router.get("/orders", async (req, res) => {
 })
 
 // Admin: View a Specific Order by ID
-router.get("/orders/:id", authenticateCustomer, async (req, res) => {
+router.get("/orders/:id", async (req, res) => {
     try {
-        const orderId = req.params;
+        const orderId = req.params.id;
         const orders = await Order.findOne({ where: { id: orderId } });
         res.send(orders);
     } catch (error) {
@@ -72,7 +72,7 @@ router.delete("/order/:id", authenticateCustomer, async (req, res) => {
         const order = req.params.id;
         const customerId = req.customer.id
 
-        if (!validator.isInt(customerId, { min: 1 })) {
+        if (!validator.isInt(order, { min: 1 })) {
             return res.status(400).send({ error: 'Invalid customer ID. Must be a positive integer'});
           }
         
@@ -87,24 +87,28 @@ router.delete("/order/:id", authenticateCustomer, async (req, res) => {
 router.put("/order/:id", authenticateCustomer,  async (req, res) => {
     try {
         
-        const { orderStatus } = req.body
+        const { orderStatus } = req.body;
+        const orderId = req.params.id;
         const customerId = req.customer.id;
         
         // Or const [_, [updatedOrder]] instead of newOrder to show all of the order info to user in response. _ placeholder to ignore the number of rows affected from the destructured Order.update
-        const newOrder = await Order.update({
+        const [rowsAffected, [updatedOrder]] = await Order.update({
         orderStatus
         }, {
           where: {
-           id: customerId 
+            id: orderId,
+            customerId: customerId
           },
           returning: true
         })
+
+        if (rowsAffected === 0) {
+            res.status(404).send({ error: "Order Not Found" })
+        }
   
         res.send({
           message: "Order Information Updated!",
-          Order: {
-            orderStatus: newOrder.orderStatus
-            }
+          Order: updatedOrder
         })
     } catch (error) {
         res.status(500).send({ error: "Internal Server Error" })

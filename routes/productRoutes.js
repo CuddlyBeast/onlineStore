@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const validator = require("validator");
 
 const { Product } = require("../models");
 
@@ -66,9 +67,9 @@ router.put("/product/:id", async (req, res) => {
   try {
       
       const { name, description, price,	category,	size,	color, quantity, image } = req.body
-      const productId = req.params;
+      const productId = req.params.id;
 
-      const newProduct = await Product.update({
+      const [rowsAffected, [updatedProduct]] = await Product.update({
         name,
         description,
         price,
@@ -84,19 +85,13 @@ router.put("/product/:id", async (req, res) => {
         returning: true
       })
 
+      if (rowsAffected === 0) {
+        res.status(404).send({ error: "Product Not Found" })
+      }
+
       res.send({
         message: "Product Updated!",
-        Product: {
-          id: newProduct.id,
-          name: newProduct.name,
-          description: newProduct.description,
-          price: newProduct.price,
-          category: newProduct.category,
-          size: newProduct.size,
-          color: newProduct.color,
-          quantity: newProduct.quantity,
-          image: newProduct.image,
-          }
+        Product: updatedProduct
       })
   } catch (error) {
       res.status(500).send({ error: "Internal Server Error" })
@@ -106,7 +101,7 @@ router.put("/product/:id", async (req, res) => {
 // Admin: Delete Product
 router.delete("/product/:id", async (req, res) => {
   try {
-      const productId = req.params;
+      const productId = req.params.id;
       
       if (!validator.isInt(productId, { min: 1 })) {
         return res.status(400).send({ error: 'Invalid product ID. Must be a positive integer'});
@@ -114,7 +109,7 @@ router.delete("/product/:id", async (req, res) => {
       
       Product.destroy({ where: { id: productId } })
 
-      res.send({ message: `Product with ID:${productId} has been deleted.` })
+      res.send({ message: `Product with Id: ${productId} has been deleted.` })
   } catch (error) {
       res.status(500).send({ error: "Internal Server Error" })
   }

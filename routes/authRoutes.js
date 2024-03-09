@@ -109,7 +109,7 @@ router.get('/customers', async (req, res) => {
 // Admin: Get Customer by ID
 router.get('/customers/:id', async (req, res) => {
   try {
-    const customerId = req.params;
+    const customerId = req.params.id;
     const customer = await Customer.findOne({ where: { id: customerId } });
     res.status(200).send(customer)
   } catch (error) {
@@ -124,7 +124,7 @@ router.put("/profile", authenticateCustomer,  async (req, res) => {
       const { name,	email, address, phoneNumber, paymentInformation } = req.body
       const customerId = req.customer.id;
 
-      const newProduct = await Customer.update({
+      const [rowsAffected, [updatedCustomer]] = await Customer.update({
         name,
         email,
         address,
@@ -137,16 +137,13 @@ router.put("/profile", authenticateCustomer,  async (req, res) => {
         returning: true
       })
 
+      if (rowsAffected === 0) {
+        return res.status(404).send({ error: "Customer not found" });
+      }
+
       res.send({
         message: "Customer Information Updated!",
-        Customer: {
-          id: newProduct.id,
-          name: newProduct.name,
-          email: newProduct.email,
-          address: newProduct.address,
-          phoneNumber: newProduct.phoneNumber,
-          paymentInformation: newProduct.paymentInformation,
-          }
+        Customer: updatedCustomer
       })
   } catch (error) {
       res.status(500).send({ error: "Internal Server Error" })
@@ -154,18 +151,19 @@ router.put("/profile", authenticateCustomer,  async (req, res) => {
 });
 
 // Profile~ Delete Own Profile
-router.delete("/profile/:id", authenticateCustomer, async (req, res) => {
+router.delete("/profile", authenticateCustomer, async (req, res) => {
   try {
-      const customerId = req.customer.id;
+      const customerId = req.customer.id.toString();
       
       if (!validator.isInt(customerId, { min: 1 })) {
         return res.status(400).send({ error: 'Invalid customer ID. Must be a positive integer'});
       }
       
-      Product.destroy({ where: { id: customerId } })
+      Customer.destroy({ where: { id: customerId } })
 
-      res.send({ message: `Customer with ID:${customerId} has been deleted.` })
+      res.send({ message: `Customer with Id: ${customerId} has been deleted.` })
   } catch (error) {
+    console.log(error)
       res.status(500).send({ error: "Internal Server Error" })
   }
 });
