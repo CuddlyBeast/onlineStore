@@ -94,7 +94,7 @@ loginLink.addEventListener('click', () => {
 //         messageContainer.textContent = message;
 
 //         if (isSuccess) {
-//             messageContainer.style.color = 'var(--primaryColor)'; 
+//             messageContainer.style.color = '#6e5b91'; 
 //         } else {
 //             messageContainer.style.color = 'rgba(211, 8, 8, 0.568)'; 
 //         }

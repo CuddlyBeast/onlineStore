@@ -553,11 +553,14 @@ footer .copyright{
 
 #pagination{
     text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 #pagination a{
     text-decoration: none;
     background-color: #088178;
+    border: 1px solid white;
     padding: 15px 20px;
     border-radius: 4px;
     color: #fff;
@@ -565,7 +568,7 @@ footer .copyright{
 }
 
 #pagination a i{
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 600;
 }
 
@@ -961,9 +964,62 @@ footer .copyright{
     font-size: 17px;
 }
 
+/* Cart Styling */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content.show {
+    display: block;
+}
+
+/* Style the cart items */
+.cart-item {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Style the badge */
+
+.cart-badge {
+    position: relative; /* Set the parent element to relative positioning */
+}
+
+.cart-badge .badge {
+    position: absolute; /* Set the badge to absolute positioning */
+    top: -7px; /* Adjust the top position as needed */
+    right: 5px; /* Adjust the right position as needed */
+    background-color: red; /* Add styles for the badge */
+    color: white;
+    border-radius: 50%; /* Make it round */
+    padding: 5px 8px; /* Add padding for better appearance */
+    font-size: 12px; /* Adjust font size as needed */
+}
+
+
+
 /* Media Query */
 
-@media (max-width:799px) {
+@media (max-width:870px) {
     
     .section-p1{
         padding: 40px 40px;
@@ -1237,5 +1293,4 @@ footer .copyright{
             width: 100%;
             padding: 20px;
         }
-
 }
