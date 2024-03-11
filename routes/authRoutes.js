@@ -11,7 +11,7 @@ const router = express.Router();
 // Sign up
 router.post('/signup', async (req, res) => {
   try {
-    const { name, phoneNumber, address, email, password } = req.body;
+    const { name, phoneNumber, email, password } = req.body;
 
     const validationOptions = {
       minLength: 8,
@@ -31,7 +31,6 @@ router.post('/signup', async (req, res) => {
     const newCustomer = await Customer.create({
       name,
       phoneNumber,
-      address,
       email,
       password: hashedPassword,
     });
@@ -42,7 +41,6 @@ router.post('/signup', async (req, res) => {
         id: newCustomer.id,
         name: newCustomer.name,
         phoneNumber: newCustomer.phoneNumber,
-        address: newCustomer.address,
         email: newCustomer.email,
       },
     });

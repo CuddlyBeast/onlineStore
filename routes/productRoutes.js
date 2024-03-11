@@ -29,7 +29,7 @@ router.get('/products/:id', async (req, res) => {
 // Admin: Create a New Product
 router.post("/product", isAdmin, async (req, res) => {
   try {
-      const { name, description, price,	category,	size,	color, type, image } = req.body;
+      const { name, description, price,	category,	size, type, image, brand } = req.body;
 
 
       const newProduct = await Product.create({
@@ -40,7 +40,8 @@ router.post("/product", isAdmin, async (req, res) => {
         size,
         color,
         type,
-        image
+        image,
+        brand
       })
 
 
@@ -56,6 +57,7 @@ router.post("/product", isAdmin, async (req, res) => {
         color: newProduct.color,
         type: newProduct.type,
         image: newProduct.image,
+        brand: newProduct.brand,
         }
       })
   } catch (error) {
@@ -67,7 +69,7 @@ router.post("/product", isAdmin, async (req, res) => {
 router.put("/product/:id", isAdmin, async (req, res) => {
   try {
       
-      const { name, description, price,	category,	size,	color, type, image } = req.body
+      const { name, description, price,	category,	size, type, image, brand } = req.body
       const productId = req.params.id;
 
       const [rowsAffected, [updatedProduct]] = await Product.update({
@@ -78,7 +80,8 @@ router.put("/product/:id", isAdmin, async (req, res) => {
         size,
         color,
         type,
-        image
+        image,
+        brand
       }, {
         where: {
          id: productId 

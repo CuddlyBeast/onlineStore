@@ -7,7 +7,7 @@ const router = express.Router();
 // Add a new order detail to an order will be called multiple times
 router.post("/order/:id/details", authenticateCustomer, async (req, res) => {
     try {
-        const { productId, quantity, price, paymentMethod } = req.body; 
+        const { productId, quantity, price } = req.body; 
         const orderId = req.params.id;
         
 
@@ -16,7 +16,6 @@ router.post("/order/:id/details", authenticateCustomer, async (req, res) => {
             productId,
             quantity,
             price,
-            paymentMethod,
         });
 
         res.send({
@@ -27,7 +26,6 @@ router.post("/order/:id/details", authenticateCustomer, async (req, res) => {
             productId: newOrderDetails.productId,
             quantity: newOrderDetails.quantity,
             price: newOrderDetails.price,
-            paymentMethod: newOrderDetails.paymentMethod,
             }
         })
 
