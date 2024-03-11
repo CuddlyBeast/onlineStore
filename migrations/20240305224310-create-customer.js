@@ -21,9 +21,6 @@ module.exports = {
       phoneNumber: {
         type: Sequelize.STRING
       },
-      paymentInformation: {
-        type: Sequelize.STRING
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

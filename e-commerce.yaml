@@ -1,0 +1,332 @@
+openapi: 3.0.3
+info:
+  title: E-commerce
+  description: >-
+    These routes allow for a functional e-commerce website alongside admin
+    capabilities.
+  contact:
+    email: jonathan_cudd@live.co.uk
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: tbd
+tags:
+  - name: Cuddy
+    description: Everything about the e-commerce routes
+paths:
+  /cuddy/signup:
+    summary: creates a new user in the database
+    description: >-
+      Allows the customer to create a profile of their information in order to
+      use the application.
+    post:
+      summary: >-
+        Requires information from the user to create a profile for them in the
+        database.
+      description: >-
+        The user provides a name and address. As well as a unique mobile number,
+        email, and password. The function validates the password making sure it
+        is at least 8 characters long including lowercase, uppercase, and
+        numeric values. The function then hashes the password and the
+        information in stored in the database. If the new user creation is
+        successful the user will be notified.
+      operationId: sign_up
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - authRoutes
+  /cuddy/signin:
+    summary: >-
+      Allows the user to retrieve access their account and perform actions in
+      the application.
+    description: >-
+      The user signs in with their unique email and password. If the information
+      is correct they will receive a JWT token that will allow them to interact
+      with their profile and the application.
+    post:
+      summary: >-
+        User provides their email and password gaining authorization to interact
+        with the application.
+      description: >-
+        The user provides their email and password. The functions checks if the
+        email and password is valid notifying the user which if any are
+        incorrect. If both are correct they are given a token for an hour and
+        notified as such so they can navigate through the application and
+        interact with its functions.
+      operationId: sign_in
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - authRoutes
+  /cuddy/products:
+    get:
+      summary: 'Retrieve all products. '
+      description: 'Retrieve all products. '
+      operationId: get_products
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - productRoutes
+  /cuddy/order:
+    summary: The user picks items and confirms their order for the business to view
+    description: >-
+      The user clarifies which products they want as well as the size.  Once the
+      order has been added they user is notified.
+    post:
+      summary: The user can order items to notify the business provider.
+      description: >-
+        The user id is found through the JWT token. The foreign key in the order
+        details  table links to the order table to keep track of items. 
+        Additionally, there is are timestamps to help distinguish between orders
+        and their priority as well as an order status column to signify each
+        orders progression towards completion. 
+      operationId: post_order
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - orderRoutes
+  /cuddy/order/history:
+    summary: the user can view all of their orders.
+    description: Uses the JWT token to access the orders related to the given user_id.
+    get:
+      summary: Allows the user to view all of their previous orders
+      description: >-
+        The JWT token is accessed to evaluate who the user is and their previous
+        orders are shown to them.
+      operationId: order_history
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - orderRoutes
+  /cuddy/order/{id}:
+    summary: Use to delete a single order.
+    description: >-
+      Use to delete a single order related to the given user and identified by
+      its order id.
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the order to delete
+          schema:
+            type: string
+      summary: >-
+        Specify an order id that correlates to the user's profile and delete
+        that order.
+      description: >-
+        The order is specified in the url params and the user is obtained
+        through the JWT token. The function uses the order and user id to target
+        the given order deleting each and every item related to that order id.
+        The function then returns a message which states which order has been
+        deleted.
+      operationId: delete_order
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - orderRoutes
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the order to update
+          schema:
+            type: string
+      summary: >-
+        Enables the changing of the order status so that it can be updated in
+        this mock example after a given time. 
+      description: >-
+        The order status is the only information requested. The order id will be
+        retrieved in the url params and the customer id will be verified  by the
+        JWT token. Information received will state if a order has been updated
+        or if the order has not been found.
+      operationId: change_order_status
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - orderRoutes
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the order to update
+          schema:
+            type: string
+      summary: Allows for the viewing of a specific order.
+      description: Allows for the viewing of a specific order by order id.
+      operationId: orders_id
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - orderRoutes
+  /cuddy/orders:
+    summary: Admin function to retrieve all orders.
+    description: Allows for the viewing of all orders.
+    get:
+      summary: Allows for the viewing of all orders.
+      description: Allows for the viewing of all orders.
+      operationId: orders
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - orderRoutes
+  /cuddy/customers:
+    get:
+      summary: 'Admin: retrieve all customers'
+      description: Allows for the viewing of all customers
+      operationId: get_customers
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - authRoutes
+  /cuddy/customers/{id}:
+    get:
+      summary: 'Admin: retrieve a single customer'
+      description: Allows for the viewing of a specific customer by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the order to update
+          schema:
+            type: string
+      operationId: get_customer
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - authRoutes
+  /cuddy/logout:
+    post:
+      summary: Destroys the user's session
+      description: Destroys the user's session
+      operationId: logout
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - authRoutes
+  /cuddy/profile:
+    delete:
+      summary: 'Delete personal profile. '
+      description: 'Allows the user to delete their profile. '
+      operationId: delete_profile
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - authRoutes
+  /cuddy/product:
+    post:
+      summary: Create a new product.
+      description: Create a new product.
+      operationId: post_product
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - productRoutes
+  /cuddy/products/{id}:
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the order to update
+          schema:
+            type: string
+      summary: Update a product's information.
+      description: Update a product's information.
+      operationId: change_product
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - productRoutes
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the order to update
+          schema:
+            type: string
+      summary: Delete a product.
+      description: Delete a product.
+      operationId: delete_product
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - productRoutes
+    get:
+      summary: Retrieve a specific product by ID
+      description: Retrieve a specific product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the order to update
+          schema:
+            type: string
+      operationId: product_id
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - productRoutes
+  /cuddy/order/{id}/details:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the order to update
+          schema:
+            type: string
+      summary: 'Retrieve all order details for a specific order. '
+      description: >-
+        Retrieve all order details for a specific order marked by the order id
+        present in the url params. 
+      operationId: get_details
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - orderDetailsRoutes
+    post:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the order to update
+          schema:
+            type: string
+      summary: Add a new order detail to an order.
+      description: >-
+        Add a new order detail to an order. Requesting productId, quantity,
+        price, and paymentMethod with each item being linked to the given order
+        by the orderId present in the url params.
+      operationId: post_details
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - orderDetailsRoutes

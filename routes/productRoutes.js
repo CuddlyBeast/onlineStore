@@ -3,6 +3,7 @@ const router = express.Router();
 const validator = require("validator");
 
 const { Product } = require("../models");
+const { isAdmin } = require("../middleware/isAdminMiddleware");
 
 // View All Products
 router.get('/products', async (req, res) => {
@@ -26,7 +27,7 @@ router.get('/products/:id', async (req, res) => {
 });
 
 // Admin: Create a New Product
-router.post("/product", async (req, res) => {
+router.post("/product", isAdmin, async (req, res) => {
   try {
       const { name, description, price,	category,	size,	color, type, image } = req.body;
 
@@ -63,7 +64,7 @@ router.post("/product", async (req, res) => {
 });
 
 // Admin: Update a Product's information
-router.put("/product/:id", async (req, res) => {
+router.put("/product/:id", isAdmin, async (req, res) => {
   try {
       
       const { name, description, price,	category,	size,	color, type, image } = req.body
@@ -99,7 +100,7 @@ router.put("/product/:id", async (req, res) => {
 });
 
 // Admin: Delete Product
-router.delete("/product/:id", async (req, res) => {
+router.delete("/product/:id", isAdmin, async (req, res) => {
   try {
       const productId = req.params.id;
       

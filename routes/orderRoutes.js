@@ -1,7 +1,8 @@
 const express = require("express");
 const { Order } = require("../models");
 const validator = require('validator');
-const { authenticateCustomer } = require("../middleware/authenticationMiddleware")
+const { authenticateCustomer } = require("../middleware/authenticationMiddleware");
+const { isAdmin } = require("../middleware/isAdminMiddleware");
 
 const router = express.Router();
 
@@ -35,7 +36,7 @@ router.post("/order", authenticateCustomer, async (req, res) => {
 });
 
 // Admin: View Every Order in the System
-router.get("/orders", async (req, res) => {
+router.get("/orders", isAdmin, async (req, res) => {
     try {
         const orders = await Order.findAll();
         res.send(orders);
@@ -45,7 +46,7 @@ router.get("/orders", async (req, res) => {
 })
 
 // Admin: View a Specific Order by ID
-router.get("/orders/:id", async (req, res) => {
+router.get("/orders/:id", isAdmin, async (req, res) => {
     try {
         const orderId = req.params.id;
         const orders = await Order.findOne({ where: { id: orderId } });
@@ -91,7 +92,6 @@ router.put("/order/:id", authenticateCustomer,  async (req, res) => {
         const orderId = req.params.id;
         const customerId = req.customer.id;
         
-        // Or const [_, [updatedOrder]] instead of newOrder to show all of the order info to user in response. _ placeholder to ignore the number of rows affected from the destructured Order.update
         const [rowsAffected, [updatedOrder]] = await Order.update({
         orderStatus
         }, {

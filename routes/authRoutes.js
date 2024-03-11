@@ -3,14 +3,15 @@ const jwt = require('jsonwebtoken');
 const { Customer } = require('../models');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
-const { authenticateCustomer } = require("../middleware/authenticationMiddleware")
+const { authenticateCustomer } = require("../middleware/authenticationMiddleware");
+const { isAdmin } = require("../middleware/isAdminMiddleware");
 
 const router = express.Router();
 
 // Sign up
 router.post('/signup', async (req, res) => {
   try {
-    const { name, phoneNumber, address, email, password, paymentInformation } = req.body;
+    const { name, phoneNumber, address, email, password } = req.body;
 
     const validationOptions = {
       minLength: 8,
@@ -33,7 +34,6 @@ router.post('/signup', async (req, res) => {
       address,
       email,
       password: hashedPassword,
-      paymentInformation,
     });
 
     res.send({
@@ -44,7 +44,6 @@ router.post('/signup', async (req, res) => {
         phoneNumber: newCustomer.phoneNumber,
         address: newCustomer.address,
         email: newCustomer.email,
-        paymentInformation: newCustomer.paymentInformation,
       },
     });
   } catch (error) {
@@ -97,7 +96,7 @@ router.post('/logout', async (req, res) => {
 });
 
 // Admin: Get All Customers
-router.get('/customers', async (req, res) => {
+router.get('/customers', isAdmin, async (req, res) => {
   try {
     const customers = await Customer.findAll()
     res.status(200).send(customers)
@@ -107,7 +106,7 @@ router.get('/customers', async (req, res) => {
 });
 
 // Admin: Get Customer by ID
-router.get('/customers/:id', async (req, res) => {
+router.get('/customers/:id', isAdmin, async (req, res) => {
   try {
     const customerId = req.params.id;
     const customer = await Customer.findOne({ where: { id: customerId } });
@@ -121,7 +120,7 @@ router.get('/customers/:id', async (req, res) => {
 router.put("/profile", authenticateCustomer,  async (req, res) => {
   try {
       
-      const { name,	email, address, phoneNumber, paymentInformation } = req.body
+      const { name,	email, address, phoneNumber } = req.body
       const customerId = req.customer.id;
 
       const [rowsAffected, [updatedCustomer]] = await Customer.update({
@@ -129,7 +128,6 @@ router.put("/profile", authenticateCustomer,  async (req, res) => {
         email,
         address,
         phoneNumber,
-        paymentInformation
       }, {
         where: {
          id: customerId 
