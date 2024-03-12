@@ -1,6 +1,27 @@
 const productContainer = document.querySelector('.pro-container');
+const paginationContainer = document.getElementById('pagination');
+let currentPage = 1;
 
 document.addEventListener('DOMContentLoaded', async function() {
+    const newsletterButton = document.getElementById('newsletterButton');
+
+
+
+    newsletterButton.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        if (isValidEmail(emailInput.value)) {
+            newsletterButton.textContent = 'Submitted';
+        } else {
+            newsletterButton.textContent = 'Invalid';
+        }
+    });
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
     try {
         const response = await fetch('http://localhost:3000/cuddy/products');
         if (!response.ok) {
@@ -16,10 +37,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 function displayTableServiceData(data) {
-    let featuredProductsHtml = '';
+    const itemsPerPage = 8;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentItems = data.slice(startIndex, endIndex)
 
+    let featuredProductsHtml = '';
    
-    data.forEach(item => {
+    currentItems.forEach(item => {
         featuredProductsHtml += `
         <div class="pro">
             <img src="${item.image}"> 
@@ -41,6 +66,36 @@ function displayTableServiceData(data) {
 
     productContainer.innerHTML = featuredProductsHtml;
     document.querySelector('.pro-container').innerHTML = featuredProductsHtml;
+
+      // Clear pagination links
+    paginationContainer.innerHTML = '';
+
+    // Calculate total pages
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+
+    // Create pagination links
+    for (let i = 1; i <= totalPages; i++) {
+        const pageLink = document.createElement('a');
+        pageLink.href = '#';
+        pageLink.textContent = i;
+        pageLink.addEventListener('click', () => {
+            currentPage = i;
+            displayTableServiceData(data);
+        });
+        paginationContainer.appendChild(pageLink);
+    }
+
+    // Disable or enable next page button based on current page
+    const nextPageButton = document.createElement('a');
+    nextPageButton.href = '#';
+    nextPageButton.innerHTML = '<i class="bx bx-right-arrow-alt"></i>';
+    nextPageButton.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayTableServiceData(data);
+        }
+    });
+    paginationContainer.appendChild(nextPageButton);
     
     document.querySelectorAll('.pro').forEach(product => {
         product.addEventListener('click', () => {

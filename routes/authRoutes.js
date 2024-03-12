@@ -11,7 +11,7 @@ const router = express.Router();
 // Sign up
 router.post('/signup', async (req, res) => {
   try {
-    const { name, phoneNumber, email, password } = req.body;
+    const { name, mobile, email, password } = req.body;
 
     const validationOptions = {
       minLength: 8,
@@ -30,7 +30,7 @@ router.post('/signup', async (req, res) => {
 
     const newCustomer = await Customer.create({
       name,
-      phoneNumber,
+      mobile,
       email,
       password: hashedPassword,
     });
@@ -40,7 +40,7 @@ router.post('/signup', async (req, res) => {
       Customer: {
         id: newCustomer.id,
         name: newCustomer.name,
-        phoneNumber: newCustomer.phoneNumber,
+        mobile: newCustomer.mobile,
         email: newCustomer.email,
       },
     });
@@ -118,14 +118,14 @@ router.get('/customers/:id', isAdmin, async (req, res) => {
 router.put("/profile", authenticateCustomer,  async (req, res) => {
   try {
       
-      const { name,	email, address, phoneNumber } = req.body
+      const { name,	email, address, mobile } = req.body
       const customerId = req.customer.id;
 
       const [rowsAffected, [updatedCustomer]] = await Customer.update({
         name,
         email,
         address,
-        phoneNumber,
+        mobile,
       }, {
         where: {
          id: customerId 

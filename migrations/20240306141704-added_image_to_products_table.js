@@ -21,9 +21,6 @@ module.exports = {
       category: {
         type: Sequelize.STRING
       },
-      size: {
-        type: Sequelize.STRING
-      },
       color: {
         type: Sequelize.STRING
       },

@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 window.location.href = '/';
             } else {
-                displayMessage(`Login failed`, false);
+                displayMessage(`Login failed`, false, 'login');
             }
         } catch (error) {
             console.error('Login Error:', error);
@@ -74,30 +74,39 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json'
                 }
             });
-    
-            const data = await response.json();
+
             if (response.ok) {
-                displayMessage('Registration successful!', true);
+                displayMessage('Registration successful!', true, 'registration');
                 setTimeout(() => {
                     window.location.href = '/authenticate';
                 }, 3000);
             } else {
-                displayMessage(`Registration failed`, false);
+                displayMessage(`Registration failed`, false, 'registration');
             }
         } catch (error) {
             console.error('Registration Error:', error);
         }
     });  
     
-    function displayMessage(message, isSuccess) {
-        const messageContainer = document.getElementById('registration-message');
+    function displayMessage(message, isSuccess, formType) {
+        let messageContainer;
+        if (formType === 'login') {
+            messageContainer = document.getElementById('login-message');
+        } else if (formType === 'registration') {
+            messageContainer = document.getElementById('registration-message');
+        } else {
+            console.error('Invalid form type provided');
+            return;
+        }
+    
         messageContainer.textContent = message;
-
+    
         if (isSuccess) {
             messageContainer.style.color = '#6e5b91'; 
         } else {
             messageContainer.style.color = 'rgba(211, 8, 8, 0.568)'; 
         }
     }
+    
 
 });

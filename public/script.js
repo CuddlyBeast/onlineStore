@@ -16,6 +16,38 @@ if (close) {
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
+    const shopNowButton = document.getElementById('shop-now');
+    const exploreButton = document.getElementById('explore');
+    const collectionButton = document.getElementById('collection');
+    const newsletterButton = document.getElementById('newsletterButton');
+
+    shopNowButton.addEventListener('click', function() {
+        window.location.href = '/shop';
+    });
+
+    exploreButton.addEventListener('click', function() {
+        window.location.href = '/shop';
+    });
+
+    collectionButton.addEventListener('click', function() {
+        window.location.href = '/shop';
+    });
+
+    newsletterButton.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        if (isValidEmail(emailInput.value)) {
+            newsletterButton.textContent = 'Submitted';
+        } else {
+            newsletterButton.textContent = 'Invalid';
+        }
+    });
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
     try {
         const response = await fetch('http://localhost:3000/cuddy/products');
         if (!response.ok) {

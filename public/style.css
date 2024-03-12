@@ -469,6 +469,12 @@ body{
     border-bottom-left-radius: 0;
 }
 
+#signup-thanks{
+    display: flex;
+    flex-direction: column;
+    color: #fc07ef;
+}
+
 footer{
     display: flex;
     flex-wrap: wrap;

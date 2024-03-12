@@ -51,7 +51,7 @@
                 </li>
 
                 <li>
-                    <i class="fa-solid fa-phone"></i>
+                    <i class='bx bx-phone'></i>
                     <p>+44 07767 765398</p>
                 </li>
 
@@ -68,14 +68,14 @@
     </section>
 
     <section id="form-details">
-        <form action="">
+        <form action="https://api.web3forms.com/submit" method="POST">
             <span>LEAVE A MESSAGE</span>
-            <h2>We love to hear from you</h2>
-            <input type="text" placeholder="Your Name">
-            <input type="text" placeholder="E-mail">
-            <input type="text" placeholder="Subject">
-            <textarea name="" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
-            <button class="normal">Submit</button>
+            <h2>We would love to hear from you</h2>
+            <input type="hidden" name="access_key" value="f242d71e-a659-4ac4-baa9-c70ccd040c58">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
+            <button type="submit" class="normal">Submit</button>
         </form>
 
         <div class="people">
@@ -100,8 +100,8 @@
             <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
         </div>
         <div class="form">
-            <input type="text" placeholder="Your email address">
-            <button class="normal">Sign Up</button>
+            <input type="email" id="emailInput" placeholder="Your email address">
+            <button type="submit" id="newsletterButton" class="normal">Sign Up</button>
         </div>
     </section>
 
@@ -126,17 +126,17 @@
 
         <div class="col">
             <h4>About</h4>
-            <a href="#">About us</a>
+            <a href="/about">About us</a>
             <a href="#">Delivery Information</a>
             <a href="#">Privacy Policy</a>
             <a href="#">Terms & Conditions</a>
-            <a href="#">Contact Us</a>
+            <a href="/contact">Contact Us</a>
         </div>
 
         <div class="col">
             <h4>My Account</h4>
-            <a href="#">Sign In</a>
-            <a href="#">View Cart</a>
+            <a href="/authenticate">Sign In</a>
+            <a href="/cart">View Cart</a>
             <a href="#">My Wishlist</a>
             <a href="#">Track My Order</a>
             <a href="#">Help</a>

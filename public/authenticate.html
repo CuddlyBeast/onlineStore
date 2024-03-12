@@ -12,7 +12,7 @@
         <div class="wrapper">
             <div class="form-box login">
                 <h2>Login</h2>
-                <form action="#" id="login-form" action="https://localhost:3000/api/signin" method="POST">
+                <form action="#" id="login-form" action="https://localhost:3000/cuddy/signin" method="POST">
                     <div class="input-box">
                         <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
                         <input type="email" name="email" id="email" required>
@@ -20,7 +20,7 @@
                     </div>
                     <div class="input-box">
                         <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
-                        <input type="password" name="password" id="password" required>
+                        <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Password must contain at least one uppercase letter, one lowercase letter, one number, and be at least 8 characters long" required>
                         <label>Password</label>
                     </div>
                     <div class="remember-forgot">
@@ -28,7 +28,7 @@
                         <a href="#">Forgot Password?</a>
                     </div>
                     <button type="submit" class="btn">Login</button>
-                    <div id="registration-message"></div>
+                    <div id="login-message"></div>
                     <div class="login-register">
                         <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
                         <a href="/" class="return-button"><ion-icon name="storefront-outline"></ion-icon>Return</a>
@@ -38,7 +38,7 @@
 
             <div class="form-box register">
                 <h2>Registration</h2>
-                <form action="#" id="registration-form" action="https://localhost:3000/api/signup" method="POST">
+                <form action="#" id="registration-form" action="https://localhost:3000/cuddy/signup" method="POST">
                     <div class="input-box">
                         <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
                         <input type="text" name="name" required>
@@ -51,12 +51,12 @@
                     </div>
                     <div class="input-box">
                         <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
-                        <input type="password" name="password" required>
+                        <input type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Password must contain at least one uppercase letter, one lowercase letter, one number, and be at least 8 characters long" required>
                         <label>Password</label>
                     </div>
                     <div class="input-box">
                         <span class="icon"><ion-icon name="phone-portrait-outline"></ion-icon></span>
-                        <input type="tel" name="mobile" required>
+                        <input type="tel" name="mobile" pattern="[0-9]{10,11}" title="Mobile number must be numeric and have a length of 10 or 11 digits" minlength="10" maxlength="11" required>
                         <label>Mobile</label>
                     </div>
                     <div class="remember-forgot">
@@ -75,7 +75,6 @@
 
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-<script src="https://kit.fontawesome.com/bee36ef8ad.js" crossorigin="anonymous"></script>
 <script src="authenticate.js"></script>
 </body>
 </html>
