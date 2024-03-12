@@ -30,24 +30,7 @@
     </section>
 
     <section id="prodetails" class="section-p1">
-        <div class="single-pro-image">
-            <img src="img/products/f1.jpg" width="100%" id="MainImg" alt="">
 
-            <div class="small-img-group">
-                <div class="small-img-col">
-                    <img src="img/products/f1.jpg" width="100%" class="small-img" alt="">
-                </div>
-                <div class="small-img-col">
-                    <img src="img/products/f2.jpg" width="100%" class="small-img" alt="">
-                </div>
-                <div class="small-img-col">
-                    <img src="img/products/f3.jpg" width="100%" class="small-img" alt="">
-                </div>
-                <div class="small-img-col">
-                    <img src="img/products/f4.jpg" width="100%" class="small-img" alt="">
-                </div>
-            </div>
-        </div>
 
 
         <div class="single-pro-details">
@@ -65,7 +48,7 @@
             <input type="number" value="1">
             <button class="normal">Add To Cart</button>
             <h4>Product Details</h4>
-            <span>Comfortable, casual, and loose-fitting, our vibrant captivating t-shirt will quickly become one of your favorites. Made from 100% cotton, it wears well on anyone. We’ve double-needle stitched the bottom and sleeve hems for extra durability.</span>
+            <span>Comfortable, casual, and loose-fitting, our vibrant captivating product will quickly become one of your favorites. Made from 100% cotton, it wears well on anyone. We’ve double-needle stitched the bottom and top hems for extra durability.</span>
         </div>
     </section>
 
@@ -79,11 +62,11 @@
                     <span>adidas</span>
                     <h5>Cartoon Astronaut T-Shirts</h5>
                     <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
                     </div>
                     <h4>$78</h4>
                 </div>
@@ -95,11 +78,11 @@
                     <span>adidas</span>
                     <h5>Cartoon Astronaut T-Shirts</h5>
                     <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
                     </div>
                     <h4>$78</h4>
                 </div>
@@ -111,11 +94,11 @@
                     <span>adidas</span>
                     <h5>Cartoon Astronaut T-Shirts</h5>
                     <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
                     </div>
                     <h4>$78</h4>
                 </div>
@@ -127,11 +110,11 @@
                     <span>adidas</span>
                     <h5>Cartoon Astronaut T-Shirts</h5>
                     <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
                     </div>
                     <h4>$78</h4>
                 </div>
@@ -146,8 +129,8 @@
             <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
         </div>
         <div class="form">
-            <input type="text" placeholder="Your email address">
-            <button class="normal">Sign Up</button>
+            <input type="email" id="emailInput" placeholder="Your email address">
+            <button type="submit" id="newsletterButton" class="normal">Sign Up</button>
         </div>
     </section>
 
@@ -203,26 +186,6 @@
             <p>© 1996-2024, Random.com, Inc. or its affiliates</p>
         </div>
     </footer>
-
-    <script>
-        const MainImg = document.getElementById("MainImg");
-        const smallImg = document.getElementsByClassName("small-img")
-
-        smallImg[0].onclick = function(){
-            MainImg.src = smallImg[0].src;
-        }
-        smallImg[1].onclick = function(){
-            MainImg.src = smallImg[1].src;
-        }
-        smallImg[2].onclick = function(){
-            MainImg.src = smallImg[2].src;
-        }
-        smallImg[3].onclick = function(){
-            MainImg.src = smallImg[3].src;
-        }
-    </script>
-
-    <script src="script.js"></script>
-    <script src="https://kit.fontawesome.com/bee36ef8ad.js" crossorigin="anonymous"></script>
+    <script src="product.js"></script>
 </body>
 </html>

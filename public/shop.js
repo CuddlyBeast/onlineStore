@@ -46,7 +46,7 @@ function displayTableServiceData(data) {
    
     currentItems.forEach(item => {
         featuredProductsHtml += `
-        <div class="pro">
+        <div class="pro" data-id="${item.id}">
             <img src="${item.image}"> 
             <div class="des">
                 <span>${item.brand}</span>
@@ -98,8 +98,12 @@ function displayTableServiceData(data) {
     paginationContainer.appendChild(nextPageButton);
     
     document.querySelectorAll('.pro').forEach(product => {
-        product.addEventListener('click', () => {
-            window.location.href = '/product';
+        product.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            const productId = product.dataset.id;
+
+            window.location.href = `/product?id=${productId}`;
         });
     });
 
