@@ -17,15 +17,17 @@ app.use(cors());
 
 app.use(helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://unpkg.com/", "https://kit.fontawesome.com/", "https://www.google.com/maps/"],
-      connectSrc: ["'self'", "https://unpkg.com/", "https://kit.fontawesome.com/", "https://www.google.com/maps/", "https://ka-f.fontawesome.com/"],
-      fontSrc: ["'self'", "https://unpkg.com/", "https://fonts.gstatic.com/", "https://ka-f.fontawesome.com"],
-      styleSrc: ["'self'", "https://ka-f.fontawesome.com", "https://fonts.googleapis.com", "https://unpkg.com"],
-      imgSrc: ["'self'", "data:"],
-      frameSrc: ["'self'", "https://www.google.com"], 
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https://unpkg.com/", "https://www.google.com/maps/",],
+        connectSrc: ["'self'", "https://unpkg.com/", "https://www.google.com/maps/", "https://api.web3forms.com"],
+        fontSrc: ["'self'", "https://unpkg.com/", "https://fonts.gstatic.com/"],
+        styleSrc: ["'self'", "https://fonts.googleapis.com", "https://unpkg.com"],
+        imgSrc: ["'self'", "data:"],
+        frameSrc: ["'self'", "https://www.google.com"], 
+        formAction: ["'self'", "https://api.web3forms.com"]
     }
 }));
+
 
 
 const store = session.MemoryStore();
@@ -63,6 +65,9 @@ app.get('/cart', (req, res, next) => {
 });
 app.get('/authenticate', (req, res, next) => {
     res.sendFile(path.join(__dirname, "public", "authenticate.html"));
+});
+app.get('/checkout', (req, res, next) => {
+    res.sendFile(path.join(__dirname, "public", "checkout.html"));
 });
 
 

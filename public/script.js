@@ -71,7 +71,7 @@ function displayTableServiceData(data) {
     data.forEach(item => {
     if (item.category === "featured products") {
         featuredProductsHtml += `
-        <div class="pro">
+        <div class="pro" data-id="${item.id}">
             <img src="${item.image}"> 
             <div class="des">
                 <span>${item.brand}</span>
@@ -90,7 +90,7 @@ function displayTableServiceData(data) {
     }
     if (item.category === "new arrivals") {
         newArrivalsHtml += `
-        <div class="pro">
+        <div class="pro" data-id="${item.id}">
             <img src="${item.image}"> 
             <div class="des">
                 <span>${item.brand}</span>
@@ -115,10 +115,15 @@ function displayTableServiceData(data) {
     document.getElementById("new-arrivals").innerHTML = newArrivalsHtml;
     
     document.querySelectorAll('.pro').forEach(product => {
-        product.addEventListener('click', () => {
-            window.location.href = '/product';
+        product.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            const productId = product.dataset.id;
+
+            window.location.href = `/product?id=${productId}`;
         });
     });
+
 
 }
 

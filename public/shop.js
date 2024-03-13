@@ -1,11 +1,10 @@
 const productContainer = document.querySelector('.pro-container');
 const paginationContainer = document.getElementById('pagination');
 let currentPage = 1;
+let data = [];
 
 document.addEventListener('DOMContentLoaded', async function() {
     const newsletterButton = document.getElementById('newsletterButton');
-
-
 
     newsletterButton.addEventListener('click', function(event) {
         event.preventDefault();
@@ -27,14 +26,56 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (!response.ok) {
             throw new Error('Failed to fetch data');
         }
-        const data = await response.json();
+        data = await response.json();
 
         displayTableServiceData(data);
     
     } catch (error) {
         console.error('Error:', error);
     }
+
+    document.getElementById('category').addEventListener('change', filterProducts);
+    document.getElementById('price').addEventListener('change', filterProducts);
+    document.getElementById('brand').addEventListener('change', filterProducts);
 });
+
+function filterProducts() {
+    const category = document.getElementById('category').value;
+    const price = document.getElementById('price').value;
+    const brand = document.getElementById('brand').value;
+
+    // Apply filters
+    filteredData = data.filter(item => {
+        if (category !== 'all' && item.type !== category) {
+            return false;
+        }
+        if (price !== 'all') {
+            const itemPrice = parseFloat(item.price.replace('$', ''));
+            switch (price) {
+                case 'under25':
+                    if (itemPrice > 25) return false;
+                    break;
+                case '25to50':
+                    if (itemPrice < 25 || itemPrice > 50) return false;
+                    break;
+                case '50to100':
+                    if (itemPrice < 50 || itemPrice > 100) return false;
+                    break;
+                case 'over100':
+                    if (itemPrice < 100) return false;
+                    break;
+            }
+        }
+        if (brand !== 'all' && item.brand !== brand) {
+            return false;
+        }
+        return true;
+    });
+
+    // Display filtered products
+    currentPage = 1; // Reset pagination to first page
+    displayTableServiceData(filteredData);
+}
 
 function displayTableServiceData(data) {
     const itemsPerPage = 8;

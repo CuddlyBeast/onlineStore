@@ -46,23 +46,22 @@ document.addEventListener('DOMContentLoaded', async function() {
         const productData = await response.json();
 
         // Generate HTML using the product image
-        const productImage = productData.image;
         const productHtml = `
             <div class="single-pro-image">
-                <img src="${productImage}" width="100%" id="MainImg" alt="">
+                <img src="${productData.image}" width="100%" id="MainImg" alt="">
         
                 <div class="small-img-group">
                 <div class="small-img-col">
-                    <img src="${productImage}" width="100%" class="small-img" alt="">
+                    <img src="${productData.image2}" width="100%" class="small-img" alt="">
                 </div>
                 <div class="small-img-col">
-                    <img src="${productImage}" width="100%" class="small-img" alt="">
+                    <img src="${productData.image3}" width="100%" class="small-img" alt="">
                 </div>
                 <div class="small-img-col">
-                    <img src="${productImage}" width="100%" class="small-img" alt="">
+                    <img src="${productData.image4}" width="100%" class="small-img" alt="">
                 </div>
                 <div class="small-img-col">
-                    <img src="${productImage}" width="100%" class="small-img" alt="">
+                    <img src="${productData.image5}" width="100%" class="small-img" alt="">
                 </div>
             </div>
         </div>
@@ -99,6 +98,52 @@ document.addEventListener('DOMContentLoaded', async function() {
                 smallImg.src = tempSrc;
             });
         });
+
+
+        const featuredResponse = await fetch('http://localhost:3000/cuddy/products');
+        if (!response.ok) {
+            throw new Error('Failed to fetch data');
+        }
+        const data = await featuredResponse.json();
+
+        let featuredProductsHtml = '';
+        let count = 0; 
+        
+        data.forEach(item => {
+        if (item.category === "featured products" && count < 4) {
+            featuredProductsHtml += `
+            <div class="pro" data-id="${item.id}">
+                <img src="${item.image}"> 
+                <div class="des">
+                    <span>${item.brand}</span>
+                    <h5>${item.name}</h5>
+                    <div class="star">
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                    </div>
+                    <h4>$${item.price}</h4>
+                </div>
+                <a href="#"><i class='bx bx-cart-alt cart'></i></a>
+            </div>`;
+            count++;
+        }
+    })
+
+    document.querySelector('.pro-container').innerHTML = featuredProductsHtml
+
+    document.querySelectorAll('.pro').forEach(product => {
+        product.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            const productId = product.dataset.id;
+
+            window.location.href = `/product?id=${productId}`;
+        });
+    });
+
 
     } catch (error) {
         console.error('Error:', error);
