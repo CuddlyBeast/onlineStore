@@ -5,16 +5,31 @@ const productContainer = document.querySelector('.pro-container');
 
 function updateCartBadgeCount(count) {
     const badge = document.querySelector('.cart-badge .badge');
-    badge.textContent = count;
+    if (badge) {
+        badge.textContent = count;
+    } else {
+        console.error('Badge element not found.');
+    }
 }
 
 function saveCartItemsToStorage(cartItems) {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    try {
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    } catch (error) {
+        console.error('Error saving cart items to storage:', error);
+    }
 }
 
 function getCartItemsFromStorage() {
-    return JSON.parse(localStorage.getItem('cartItems')) || [];
+    try {
+        const storedItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        return storedItems;
+    } catch (error) {
+        console.error('Error retrieving cart items from storage:', error);
+        return [];
+    }
 }
+
 
 if (bar) {
     bar.addEventListener('click', () => {
@@ -29,6 +44,10 @@ if (close) {
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
+    const cartItems = getCartItemsFromStorage();
+
+    displayCartItems(cartItems);
+
     const newsletterButton = document.getElementById('newsletterButton');
 
     newsletterButton.addEventListener('click', function(event) {
@@ -51,6 +70,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         // Extract product ID from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
+
+        if (!productId) {
+            throw new Error('Product ID not found in URL.');
+        }    
 
         // Fetch specific product data using the product ID
         const response = await fetch(`http://localhost:3000/cuddy/products/${productId}`);
@@ -184,64 +207,50 @@ document.addEventListener('DOMContentLoaded', async function() {
      });
  
 
-     function addToCart(item) {
-        const sizeSelect = document.querySelector('.single-pro-details select');
-        const selectedSize = sizeSelect.options[sizeSelect.selectedIndex].text;
-        const quantityInput = document.getElementById('quantity');
-        const selectedQuantity = parseInt(quantityInput.value);
-        const totalPrice = (parseFloat(item.price.replace('$', '')) * selectedQuantity).toFixed(2);
-
-        const existingCartItem = Array.from(dropdownCart.children).find(cartItem => {
-            const itemName = cartItem.querySelector('span').textContent;
-            const itemSize = cartItem.querySelectorAll('span')[1].textContent.split(': ')[1];
-            return itemName === item.name && itemSize === selectedSize;
-        });
-
-        if (existingCartItem) {
-            const existingQuantity = parseInt(existingCartItem.querySelectorAll('span')[2].textContent.split(': ')[1]);
-            const newQuantity = existingQuantity + selectedQuantity;
-            const newTotalPrice = (parseFloat(item.price.replace('$', '')) * newQuantity).toFixed(2);
+     async function addToCart(item) {
+        try {
+            const sizeSelect = document.querySelector('.single-pro-details select');
+            const selectedSize = sizeSelect.options[sizeSelect.selectedIndex].text;
+            const quantityInput = document.getElementById('quantity');
+            const selectedQuantity = parseInt(quantityInput.value);
+            const totalPrice = (parseFloat(item.price.replace('$', '')) * selectedQuantity).toFixed(2);
     
-            existingCartItem.querySelectorAll('span')[2].textContent = `Quantity: ${newQuantity}`;
-            existingCartItem.querySelectorAll('span')[3].textContent = `$${newTotalPrice}`;
-        } else {
-            const cartItem = document.createElement('div');
-            cartItem.classList.add('cart-item');
-            cartItem.innerHTML = `
-                <img src="${item.image}" alt="${item.name}">
-                <span>${item.name}</span>
-                <span>Size: ${selectedSize}</span>
-                <span>Quantity: ${selectedQuantity}</span>
-                <span>$${totalPrice}</span>
-                <span class="remove-item">Remove</span>
-            `;
- 
-        
-         const removeButton = cartItem.querySelector('.remove-item');
-         removeButton.addEventListener('click', () => {
-             cartItem.remove();
-             updateCartBadgeCount(dropdownCart.childElementCount);
-             saveCartItemsToStorage(Array.from(dropdownCart.children))
-         });
-        
-         dropdownCart.appendChild(cartItem);
+            // Construct the cart item object with relevant data
+            const cartItem = {
+                name: item.name,
+                price: item.price,
+                image: item.image,
+                size: selectedSize,
+                quantity: selectedQuantity,
+                totalPrice: totalPrice
+            };
+    
+            // Retrieve cart items from localStorage
+            let cartItems = getCartItemsFromStorage();
+    
+            // Check if the same item already exists in the cart
+            const existingCartItemIndex = cartItems.findIndex(existingItem =>
+                existingItem.name === cartItem.name && existingItem.size === cartItem.size
+            );
+    
+            if (existingCartItemIndex !== -1) {
+                // If the item already exists, update its quantity and total price
+                cartItems[existingCartItemIndex].quantity += selectedQuantity;
+                cartItems[existingCartItemIndex].totalPrice = (parseFloat(cartItems[existingCartItemIndex].price.replace('$', '')) * cartItems[existingCartItemIndex].quantity).toFixed(2);
+            } else {
+                // If the item is new, add it to the cart
+                cartItems.push(cartItem);
+            }
+    
+            // Save updated cart items to localStorage
+            saveCartItemsToStorage(cartItems);
+    
+            // Display cart items
+            displayCartItems(cartItems);
+        } catch (error) {
+            console.error('Error adding item to cart:', error);
         }
-        
-         // Display dropdown cart on hover
-        dropdownCart.style.display = 'block';
-
-        // Hide the dropdown when mouse leaves the cart icon
-        dropdownCart.addEventListener('mouseleave', () => {
-        dropdownCart.style.display = 'none';
-        });
-
-        // Update cart badge count
-        updateCartBadgeCount(dropdownCart.childElementCount);
-
-        // Save cart items to local storage
-        saveCartItemsToStorage(Array.from(dropdownCart.children));
-        
-     }
+    }
  
 
      const addToCartButton = document.querySelector('.single-pro-details button');
@@ -268,3 +277,53 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 
+
+function displayCartItems(cartItems) {
+    const dropdownCart = document.querySelector('.dropdown-cart');
+    dropdownCart.innerHTML = ''; // Clear previous items
+    if (Array.isArray(cartItems)) {
+        cartItems.forEach(item => {
+            const cartItemHtml = `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}">
+                    <span>${item.name}</span>
+                    <span>Size: ${item.size}</span>
+                    <span>Quantity: ${item.quantity}</span>
+                    <span>Total: $${item.totalPrice}</span>
+                    <span class="remove-item">Remove</span>
+                </div>`;
+            dropdownCart.insertAdjacentHTML('beforeend', cartItemHtml);
+
+            const cartItem = dropdownCart.lastElementChild;
+
+            const removeButton = cartItem.querySelector('.remove-item');
+            removeButton.addEventListener('click', () => {
+                cartItem.remove();
+                updateCartBadgeCount(dropdownCart.childElementCount);
+
+                 // Retrieve cart items from localStorage
+                 let updatedCartItems = getCartItemsFromStorage();
+                
+                 // Remove the item from the cart items array
+                 updatedCartItems = updatedCartItems.filter(cartItem => cartItem.name !== item.name || cartItem.size !== item.size);
+                 
+                 // Save updated cart items to localStorage
+                 saveCartItemsToStorage(updatedCartItems);
+            });
+        });
+
+
+        const cartIcon = document.querySelector('.cart-badge');
+            cartIcon.addEventListener('mouseenter', () => {
+                dropdownCart.style.display = 'block';
+            });
+
+
+        dropdownCart.addEventListener('mouseleave', () => {
+            dropdownCart.style.display = 'none';
+            });
+            updateCartBadgeCount(cartItems.length);
+    }
+    updateCartBadgeCount(cartItems.length);
+    saveCartItemsToStorage(cartItems)
+}

@@ -58,17 +58,36 @@ function displayCartItems(cartItems) {
                     <span class="remove-item">Remove</span>
                 </div>`;
             dropdownCart.insertAdjacentHTML('beforeend', cartItemHtml);
+
+            const cartItem = dropdownCart.lastElementChild;
+
+            const removeButton = cartItem.querySelector('.remove-item');
+            removeButton.addEventListener('click', () => {
+                cartItem.remove();
+                updateCartBadgeCount(dropdownCart.childElementCount);
+
+                 // Retrieve cart items from localStorage
+                 let updatedCartItems = getCartItemsFromStorage();
+                
+                 // Remove the item from the cart items array
+                 updatedCartItems = updatedCartItems.filter(cartItem => cartItem.name !== item.name || cartItem.size !== item.size);
+                 
+                 // Save updated cart items to localStorage
+                 saveCartItemsToStorage(updatedCartItems);
+            });
         });
 
-        // const cartIcon = document.querySelector('.cart-badge');
-        //     cartIcon.addEventListener('mouseenter', () => {
-        //         dropdownCart.style.display = 'block';
-        //     });
+
+        const cartIcon = document.querySelector('.cart-badge');
+            cartIcon.addEventListener('mouseenter', () => {
+                dropdownCart.style.display = 'block';
+            });
 
 
-        // dropdownCart.addEventListener('mouseleave', () => {
-        //     dropdownCart.style.display = 'none';
-        //     });
+        dropdownCart.addEventListener('mouseleave', () => {
+            dropdownCart.style.display = 'none';
+            });
+            updateCartBadgeCount(cartItems.length);
     }
     updateCartBadgeCount(cartItems.length);
     saveCartItemsToStorage(cartItems)
