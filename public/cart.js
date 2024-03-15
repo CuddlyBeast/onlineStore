@@ -89,7 +89,14 @@ function populateCartPage(cartItems, subtotal, total) {
         removeButton.addEventListener('click', () => {
             const updatedCartItems = cartItems.filter(cartItem => cartItem.name !== item.name || cartItem.size !== item.size);
             saveCartItemsToStorage(updatedCartItems);
-            populateCartPage(updatedCartItems);
+
+            subtotal = calculateSubtotal(updatedCartItems);
+            const discountAmount = calculateDiscount(subtotal);
+            total = calculateTotal(subtotal);
+
+            populateCartPage(updatedCartItems, subtotal, total);
+
+            document.getElementById('discount').textContent = `-$${discountAmount.toFixed(2)}`;
         });
 
 
@@ -105,8 +112,8 @@ function populateCartPage(cartItems, subtotal, total) {
             subtotal = calculateSubtotal(cartItems);
             subtotalElement.textContent = `$${subtotal.toFixed(2)}`
 
-            const newTotal = calculateTotal(subtotal);
-            totalElement.textContent = `$${newTotal.toFixed(2)}`;
+            total = calculateTotal(subtotal);
+            totalElement.textContent = `$${total.toFixed(2)}`;
 
             if (couponApplied) {
                 const discountAmount = calculateDiscount(subtotal);
@@ -122,7 +129,7 @@ function populateCartPage(cartItems, subtotal, total) {
     });
 
     subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-    totalElement.textContent = `$${subtotal.toFixed(2)}`;
+    totalElement.textContent = `$${total.toFixed(2)}`;
 }
 
 
