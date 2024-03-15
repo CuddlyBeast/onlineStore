@@ -56,11 +56,58 @@ document.addEventListener('DOMContentLoaded', async function() {
         const data = await response.json();
 
         displayTableServiceData(data);
+
+        // Load cart data from local storage
+        const cartData = getCartData();
+
+        // Update cart badge count
+        updateCartBadgeCount(cartData.length);
+
+        // Display cart items
+        displayCartItems(cartData);
     
     } catch (error) {
         console.error('Error:', error);
     }
 });
+
+function displayCartItems(cartData) {
+    const dropdownCart = document.querySelector('.dropdown-cart');
+
+    // Clear existing cart items
+    dropdownCart.innerHTML = '';
+
+    // Iterate over cart data and display cart items
+    cartData.forEach(item => {
+        const cartItem = document.createElement('div');
+        cartItem.classList.add('cart-item');
+        cartItem.innerHTML = `
+            <img src="${item.image}" alt="${item.name}">
+            <span>${item.name}</span>
+            <span>Size: ${item.size}</span>
+            <span>Quantity: ${item.quantity}</span>
+            <span>$${item.totalPrice}</span>
+            <span class="remove-item">Remove</span>
+        `;
+        
+        // Add event listener to remove item from cart
+        const removeButton = cartItem.querySelector('.remove-item');
+        removeButton.addEventListener('click', () => {
+            // Remove item from cartData
+            const index = cartData.findIndex(cartItem => cartItem.id === item.id);
+            if (index !== -1) {
+                cartData.splice(index, 1);
+                // Update local storage and UI
+                saveCartData(cartData);
+                displayCartItems(cartData);
+                updateCartBadgeCount(cartData.length);
+            }
+        });
+
+        // Append cart item to dropdown cart
+        dropdownCart.appendChild(cartItem);
+    });
+}
 
 function displayTableServiceData(data) {
     let featuredProductsHtml = '';
@@ -85,7 +132,7 @@ function displayTableServiceData(data) {
                 </div>
                 <h4>$${item.price}</h4>
             </div>
-            <a href="#"><i class='bx bx-cart-alt cart'></i></a>
+            <a href="#"><i class='bx bx-heart cart'></i></a>
         </div>`;
     }
     if (item.category === "new arrivals") {
@@ -104,7 +151,7 @@ function displayTableServiceData(data) {
                 </div>
                 <h4>$${item.price}</h4>
             </div>
-            <a href="#"><i class='bx bx-cart-alt cart'></i></a>
+            <a href="#"><i class='bx bx-heart cart'></i></a>
         </div>`;
     }
     });
@@ -124,29 +171,5 @@ function displayTableServiceData(data) {
         });
     });
 
-
 }
 
-// document.querySelectorAll('.add-to-cart').forEach(button => {
-//     button.addEventListener('click', () => {
-//         addToCart(button);
-//     });
-// });
-
-// // Toggle cart visibility
-// document.getElementById('cartToggleBtn').addEventListener('click', function() {
-//     document.getElementById('cartContent').classList.toggle('show');
-// });
-
-// // Dummy function to add items to cart
-// function addItemToCart(itemName) {
-//     var cartContent = document.getElementById('cartContent');
-//     var cartItem = document.createElement('div');
-//     cartItem.classList.add('cart-item');
-//     cartItem.textContent = itemName;
-//     cartContent.appendChild(cartItem);
-
-//     // Update cart badge count
-//     var badge = document.querySelector('.badge');
-//     badge.textContent = parseInt(badge.textContent) + 1;
-// }

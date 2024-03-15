@@ -29,7 +29,6 @@ app.use(helmet.contentSecurityPolicy({
 }));
 
 
-
 const store = session.MemoryStore();
 
 app.use(session({
