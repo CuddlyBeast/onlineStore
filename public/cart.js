@@ -1,3 +1,23 @@
+const bar = document.getElementById('bar');
+const close = document.getElementById('close');
+const nav = document.getElementById('navbar');
+const productContainer = document.querySelector('.pro-container');
+let cartItems = [];
+let couponApplied = false;
+
+if (bar) {
+    bar.addEventListener('click', () => {
+        nav.classList.add('active');
+    })
+}
+
+if (close) {
+    close.addEventListener('click', () => {
+        nav.classList.remove('active')
+    })
+}
+
+
 const checkout = document.getElementById("checkout-button");
 
 checkout.addEventListener("click", () => {
@@ -7,60 +27,151 @@ checkout.addEventListener("click", () => {
 
 document.addEventListener('DOMContentLoaded', async function() {
 
-cartItems = getCartItemsFromStorage();
+    cartItems = getCartItemsFromStorage();
+    const subtotal = calculateSubtotal(cartItems);
+    let total = subtotal;
+
+
     displayCartItems(cartItems);
-})
+    populateCartPage(cartItems, subtotal, total);
 
-
-
-function displayCartItems(cartItems) {
-const dropdownCart = document.querySelector('.dropdown-cart');
-dropdownCart.innerHTML = ''; // Clear previous items
-if (Array.isArray(cartItems)) {
-    cartItems.forEach(item => {
-        const cartItemHtml = `
-            <div class="cart-item">
-                <img src="${item.image}" alt="${item.name}">
-                <span>${item.name}</span>
-                <span>Size: ${item.size}</span>
-                <span>Quantity: ${item.quantity}</span>
-                <span>Total: $${item.totalPrice}</span>
-                <span class="remove-item">Remove</span>
-            </div>`;
-        dropdownCart.insertAdjacentHTML('beforeend', cartItemHtml);
-
-        const cartItem = dropdownCart.lastElementChild;
-
-        const removeButton = cartItem.querySelector('.remove-item');
-        removeButton.addEventListener('click', () => {
-            cartItem.remove();
-            updateCartBadgeCount(dropdownCart.childElementCount);
-
-             // Retrieve cart items from localStorage
-             let updatedCartItems = getCartItemsFromStorage();
+    document.querySelectorAll('.quantity-input').forEach(quantityInput => {
+        quantityInput.addEventListener('input', () => {
+  
+            const cartItemIndex = parseInt(quantityInput.dataset.index);
+            cartItems[cartItemIndex].quantity = parseInt(quantityInput.value);
             
-             // Remove the item from the cart items array
-             updatedCartItems = updatedCartItems.filter(cartItem => cartItem.name !== item.name || cartItem.size !== item.size);
-             
-             // Save updated cart items to localStorage
-             saveCartItemsToStorage(updatedCartItems);
+
+            subtotal = calculateSubtotal(cartItems);
+            total = calculateTotal(subtotal);
+            
+ 
+            document.getElementById('cartSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('discount').textContent = `-$${calculateDiscount(subtotal).toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+
+            saveCartItemsToStorage(cartItems);
+
+            updateCartBadgeCount(cartItems.length);
+
         });
     });
 
+    const applyCouponButton = document.getElementById('applyCouponButton');
+    applyCouponButton.addEventListener('click', function() {
+        applyCouponDiscount(subtotal);
+    });
+})
 
-    const cartIcon = document.querySelector('.cart-badge');
-        cartIcon.addEventListener('mouseenter', () => {
-            dropdownCart.style.display = 'block';
+function populateCartPage(cartItems, subtotal, total) {
+    const cartTableBody = document.querySelector('#cart tbody');
+    const subtotalElement = document.querySelector('#subtotal td:nth-child(2)');
+    const totalElement = document.querySelector('#subtotal td:nth-child(2) strong');
+
+    cartTableBody.innerHTML = '';
+
+    cartItems.forEach(item => {
+        const cartItemRow = document.createElement('tr');
+        const itemSubtotal = item.quantity * parseFloat(item.price.replace('$', ''));
+       
+        cartItemRow.innerHTML = `
+            <td><a href="#" class="remove-item"><i class='bx bx-x-circle'></i></a></td>
+            <td><img src="${item.image}" alt=""></td>
+            <td>${item.name}</td>
+            <td>${item.price}</td>
+            <td>${item.size}</td>
+            <td><input type="number" class="quantity-input" value="${item.quantity}" min="1"></td>
+            <td class="subtotal">$${itemSubtotal.toFixed(2)}</td>
+        `;
+
+        const removeButton = cartItemRow.querySelector('.remove-item');
+
+        removeButton.addEventListener('click', () => {
+            const updatedCartItems = cartItems.filter(cartItem => cartItem.name !== item.name || cartItem.size !== item.size);
+            saveCartItemsToStorage(updatedCartItems);
+            populateCartPage(updatedCartItems);
         });
 
 
-    dropdownCart.addEventListener('mouseleave', () => {
-        dropdownCart.style.display = 'none';
+
+        const quantityInput = cartItemRow.querySelector('.quantity-input');
+
+        quantityInput.addEventListener('input', () => {
+            const newQuantity = parseInt(quantityInput.value);
+            const newSubtotal = newQuantity * parseFloat(item.price.replace('$', ''));
+            cartItemRow.querySelector('.subtotal').textContent = `$${newSubtotal.toFixed(2)}`;
+
+            item.quantity = newQuantity;
+            subtotal = calculateSubtotal(cartItems);
+            subtotalElement.textContent = `$${subtotal.toFixed(2)}`
+
+            const newTotal = calculateTotal(subtotal);
+            totalElement.textContent = `$${newTotal.toFixed(2)}`;
+
+            if (couponApplied) {
+                const discountAmount = calculateDiscount(subtotal);
+                document.getElementById('discount').textContent = `-$${discountAmount.toFixed(2)}`;
+            }
+
+            saveCartItemsToStorage(cartItems);
+
+            updateCartBadgeCount(cartItems.length);
         });
-        updateCartBadgeCount(cartItems.length);
+
+        cartTableBody.appendChild(cartItemRow);
+    });
+
+    subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+    totalElement.textContent = `$${subtotal.toFixed(2)}`;
 }
-updateCartBadgeCount(cartItems.length);
-saveCartItemsToStorage(cartItems)
+
+
+function calculateSubtotal(cartItems) {
+    return cartItems.reduce((total, item) => {
+        return total + (item.quantity * parseFloat(item.price.replace('$', '')));
+    }, 0);
+}
+
+
+function calculateTotal(subtotal) {
+    return subtotal - calculateDiscount(subtotal);
+}
+
+
+function calculateDiscount(subtotal) {
+    if (couponApplied) {
+        return 0.2 * subtotal; 
+    }
+    return 0;
+}
+
+
+function applyCouponDiscount(subtotal) {
+    const couponInput = document.getElementById('couponInput');
+    const couponCode = couponInput.value.trim().toLowerCase();
+
+    if (isValidCoupon(couponCode) && !couponApplied) {
+
+        couponApplied = true;
+
+        const discountAmount = calculateDiscount(subtotal);
+
+        const total = subtotal - discountAmount;
+
+        document.getElementById('cartSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+        document.getElementById('discount').textContent = `-$${discountAmount.toFixed(2)}`;
+        document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+    }
+}
+
+function isValidCoupon(couponCode) {
+    return couponCode === '#blessed'.toLowerCase() || couponCode === 'blessed'.toLowerCase();
+}
+
+
+function displayCartItems(cartItems) {
+    updateCartBadgeCount(cartItems.length);
+    saveCartItemsToStorage(cartItems)
 }
 
 function updateCartBadgeCount(count) {
@@ -75,3 +186,5 @@ localStorage.setItem('cartItems', JSON.stringify(cartItems));
 function getCartItemsFromStorage() {
 return JSON.parse(localStorage.getItem('cartItems')) || [];
 }
+
+

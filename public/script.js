@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const exploreButton = document.getElementById('explore');
     const collectionButton = document.getElementById('collection');
     const newsletterButton = document.getElementById('newsletterButton');
+    const freeDeliveryButton = document.getElementById('free-delivery');
 
     cartItems = getCartItemsFromStorage();
     displayCartItems(cartItems);
@@ -35,6 +36,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     collectionButton.addEventListener('click', function() {
         window.location.href = '/shop';
+    });
+
+    freeDeliveryButton.addEventListener('click', function() {
+        window.location.href = '/cart';
     });
 
     newsletterButton.addEventListener('click', function(event) {

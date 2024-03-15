@@ -36,8 +36,8 @@
     </section>
 
     <section id="page-header" class="about-header">
-        <h2>#talk2us</h2>
-        <p>DROP US A MESSAGE. Your voice matters!</p>
+        <h2>#LookingGood</h2>
+        <p>FEELING GOOD. We are here to help!</p>
     </section>
 
     <section id="cart" class="section-p1">
@@ -48,35 +48,13 @@
                     <td>Image</td>
                     <td>Product</td>
                     <td>Price</td>
+                    <td>Size</td>
                     <td>Quantity</td>
                     <td>Subtotal</td>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><a href=""><i class='bx bx-x-circle'></i></a></td>
-                    <td><img src="img/products/f1.jpg" alt=""></td>
-                    <td>Cartoon Astronaut T-Shirt</td>
-                    <td>$24.99</td>
-                    <td><input type="number" value="1"></td>
-                    <td>$24.99</td>
-                </tr>
-                <tr>
-                    <td><a href=""><i class='bx bx-x-circle'></i></a></td>
-                    <td><img src="img/products/f2.jpg" alt=""></td>
-                    <td>Winter Pine T-Shirt</td>
-                    <td>$24.99</td>
-                    <td><input type="number" value="1"></td>
-                    <td>$24.99</td>
-                </tr>
-                <tr>
-                    <td><a href=""><i class='bx bx-x-circle'></i></a></td>
-                    <td><img src="img/products/f3.jpg" alt=""></td>
-                    <td>Desert Camo T-Shirt</td>
-                    <td>$24.99</td>
-                    <td><input type="number" value="1"></td>
-                    <td>$24.99</td>
-                </tr>
+               
             </tbody>
         </table>
     </section>
@@ -85,8 +63,8 @@
         <div id="coupon">
             <h3>Apply Coupon</h3>
             <div>
-                <input type="text" placeholder="Enter Your Coupon">
-                <button class="normal">Apply</button>
+                <input type="text" placeholder="Enter Your Coupon" id="couponInput">
+                <button class="normal" id="applyCouponButton">Apply</button>
             </div>
         </div>
 
@@ -95,15 +73,19 @@
             <table>
                 <tr>
                     <td>Cart Subtotal</td>
-                    <td>$74.97</td>
+                    <td id="cartSubtotal">$0.00</td>
                 </tr>
                 <tr>
-                    <td>Shipping</td>
+                    <td>Delivery</td>
                     <td>Free</td>
                 </tr>
                 <tr>
+                    <td>Discount</td>
+                    <td id="discount">$0.00</td>
+                </tr>
+                <tr>
                     <td><strong>Total</strong></td>
-                    <td><strong>$74.97</strong></td>
+                    <td><strong id="total">$0.00</strong></td>
                 </tr>
             </table>
             <button id="checkout-button" class="normal">Proceed to checkout</button>
