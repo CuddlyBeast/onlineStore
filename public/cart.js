@@ -20,20 +20,34 @@ if (close) {
 
 const checkout = document.getElementById("checkout-button");
 
+function updateCheckoutButton(total) {
+    if (total > 0) {
+        checkout.disabled = false;
+        checkout.innerHTML = "Checkout";
+    } else {
+        checkout.disabled = true;
+        checkout.innerHTML = "Cart is Empty";
+    }
+}
+
 checkout.addEventListener("click", () => {
-    window.location.href = "/checkout"
-})
+    if (parseFloat(document.getElementById('total').textContent.slice(1)) > 0) {
+        window.location.href = "/checkout";
+    }
+});
 
 
 document.addEventListener('DOMContentLoaded', async function() {
 
     cartItems = getCartItemsFromStorage();
-    const subtotal = calculateSubtotal(cartItems);
+    let subtotal = calculateSubtotal(cartItems);
     let total = subtotal;
 
 
     displayCartItems(cartItems);
     populateCartPage(cartItems, subtotal, total);
+
+    updateCheckoutButton(total);
 
     document.querySelectorAll('.quantity-input').forEach(quantityInput => {
         quantityInput.addEventListener('input', () => {
@@ -54,13 +68,17 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             updateCartBadgeCount(cartItems.length);
 
+            updateCheckoutButton(total);
         });
     });
 
     const applyCouponButton = document.getElementById('applyCouponButton');
+
     applyCouponButton.addEventListener('click', function() {
         applyCouponDiscount(subtotal);
+        updateCheckoutButton(total); 
     });
+
 })
 
 function populateCartPage(cartItems, subtotal, total) {
@@ -89,14 +107,18 @@ function populateCartPage(cartItems, subtotal, total) {
         removeButton.addEventListener('click', () => {
             const updatedCartItems = cartItems.filter(cartItem => cartItem.name !== item.name || cartItem.size !== item.size);
             saveCartItemsToStorage(updatedCartItems);
+            updateCartBadgeCount(updatedCartItems.length);
 
             subtotal = calculateSubtotal(updatedCartItems);
             const discountAmount = calculateDiscount(subtotal);
-            total = calculateTotal(subtotal);
+            total = subtotal - discountAmount;
 
             populateCartPage(updatedCartItems, subtotal, total);
+            updateCheckoutButton(total);
 
             document.getElementById('discount').textContent = `-$${discountAmount.toFixed(2)}`;
+
+            applyCouponDiscount(subtotal);
         });
 
 
