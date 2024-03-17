@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     cartItems = getCartItemsFromStorage();
     let subtotal = calculateSubtotal(cartItems);
-    let total = subtotal;
+    let total = calculateTotal(subtotal);
 
 
     displayCartItems(cartItems);
@@ -105,20 +105,23 @@ function populateCartPage(cartItems, subtotal, total) {
         const removeButton = cartItemRow.querySelector('.remove-item');
 
         removeButton.addEventListener('click', () => {
-            const updatedCartItems = cartItems.filter(cartItem => cartItem.name !== item.name || cartItem.size !== item.size);
-            saveCartItemsToStorage(updatedCartItems);
-            updateCartBadgeCount(updatedCartItems.length);
+            cartItems = cartItems.filter(cartItem => cartItem.name !== item.name || cartItem.size !== item.size);
+            saveCartItemsToStorage(cartItems);
+            updateCartBadgeCount(cartItems.length);
 
-            subtotal = calculateSubtotal(updatedCartItems);
+            subtotal = calculateSubtotal(cartItems);
             const discountAmount = calculateDiscount(subtotal);
             total = subtotal - discountAmount;
 
-            populateCartPage(updatedCartItems, subtotal, total);
+            populateCartPage(cartItems, subtotal, total);
             updateCheckoutButton(total);
 
             document.getElementById('discount').textContent = `-$${discountAmount.toFixed(2)}`;
+            
 
             applyCouponDiscount(subtotal);
+
+            location.reload();
         });
 
 
@@ -140,6 +143,7 @@ function populateCartPage(cartItems, subtotal, total) {
             if (couponApplied) {
                 const discountAmount = calculateDiscount(subtotal);
                 document.getElementById('discount').textContent = `-$${discountAmount.toFixed(2)}`;
+                applyCouponDiscount(subtotal);
             }
 
             saveCartItemsToStorage(cartItems);
@@ -185,11 +189,11 @@ function applyCouponDiscount(subtotal) {
 
         const discountAmount = calculateDiscount(subtotal);
 
-        const total = subtotal - discountAmount;
+        const discountedTotal = subtotal - discountAmount;
 
         document.getElementById('cartSubtotal').textContent = `$${subtotal.toFixed(2)}`;
         document.getElementById('discount').textContent = `-$${discountAmount.toFixed(2)}`;
-        document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        document.getElementById('total').textContent = `$${discountedTotal.toFixed(2)}`;
     }
 }
 
