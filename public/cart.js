@@ -32,6 +32,13 @@ function updateCheckoutButton(total) {
 
 checkout.addEventListener("click", () => {
     if (parseFloat(document.getElementById('total').textContent.slice(1)) > 0) {
+
+        const discount = parseFloat(document.getElementById('discount').textContent.slice(2));
+
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        localStorage.setItem('cartTotal', JSON.stringify({ subtotal: calculateSubtotal(cartItems), total }));
+        localStorage.setItem('discount', JSON.stringify(discount));
+
         window.location.href = "/checkout";
     }
 });
@@ -117,9 +124,6 @@ function populateCartPage(cartItems, subtotal, total) {
             updateCheckoutButton(total);
 
             document.getElementById('discount').textContent = `-$${discountAmount.toFixed(2)}`;
-            
-
-            applyCouponDiscount(subtotal);
 
             location.reload();
         });

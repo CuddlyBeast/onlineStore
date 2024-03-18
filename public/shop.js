@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 function displayCartItems(cartItems) {
     const dropdownCart = document.querySelector('.dropdown-cart');
-    dropdownCart.innerHTML = ''; // Clear previous items
+    dropdownCart.innerHTML = '';
     if (Array.isArray(cartItems)) {
         cartItems.forEach(item => {
             const cartItemHtml = `
@@ -66,14 +66,13 @@ function displayCartItems(cartItems) {
                 cartItem.remove();
                 updateCartBadgeCount(dropdownCart.childElementCount);
 
-                 // Retrieve cart items from localStorage
                  let updatedCartItems = getCartItemsFromStorage();
                 
-                 // Remove the item from the cart items array
                  updatedCartItems = updatedCartItems.filter(cartItem => cartItem.name !== item.name || cartItem.size !== item.size);
                  
-                 // Save updated cart items to localStorage
                  saveCartItemsToStorage(updatedCartItems);
+
+                 location.reload()
             });
         });
 
@@ -113,7 +112,6 @@ function filterProducts() {
     const price = document.getElementById('price').value;
     const brand = document.getElementById('brand').value;
 
-    // Apply filters
     filteredData = data.filter(item => {
         if (category !== 'all' && item.type !== category) {
             return false;
@@ -176,13 +174,10 @@ function displayTableServiceData(data) {
     productContainer.innerHTML = featuredProductsHtml;
     document.querySelector('.pro-container').innerHTML = featuredProductsHtml;
 
-      // Clear pagination links
     paginationContainer.innerHTML = '';
 
-    // Calculate total pages
     const totalPages = Math.ceil(data.length / itemsPerPage);
 
-    // Create pagination links
     for (let i = 1; i <= totalPages; i++) {
         const pageLink = document.createElement('a');
         pageLink.href = '#';
@@ -194,7 +189,6 @@ function displayTableServiceData(data) {
         paginationContainer.appendChild(pageLink);
     }
 
-    // Disable or enable next page button based on current page
     const nextPageButton = document.createElement('a');
     nextPageButton.href = '#';
     nextPageButton.innerHTML = '<i class="bx bx-right-arrow-alt"></i>';

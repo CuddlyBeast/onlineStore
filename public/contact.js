@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 function displayCartItems(cartItems) {
 const dropdownCart = document.querySelector('.dropdown-cart');
-dropdownCart.innerHTML = ''; // Clear previous items
+dropdownCart.innerHTML = ''; 
 if (Array.isArray(cartItems)) {
     cartItems.forEach(item => {
         const cartItemHtml = `
@@ -112,14 +112,13 @@ if (Array.isArray(cartItems)) {
             cartItem.remove();
             updateCartBadgeCount(dropdownCart.childElementCount);
 
-             // Retrieve cart items from localStorage
              let updatedCartItems = getCartItemsFromStorage();
             
-             // Remove the item from the cart items array
              updatedCartItems = updatedCartItems.filter(cartItem => cartItem.name !== item.name || cartItem.size !== item.size);
              
-             // Save updated cart items to localStorage
              saveCartItemsToStorage(updatedCartItems);
+
+             location.reload()
         });
     });
 

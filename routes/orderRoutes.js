@@ -43,6 +43,7 @@ router.post("/order", authenticateCustomer, async (req, res) => {
         })
 
     } catch (error) {
+        console.error('Error creating order:', error);
         res.status(500).send({ error: "Internal Server Error" });
     }
 });
