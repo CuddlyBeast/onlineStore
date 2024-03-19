@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             </div>
         </div>
 
-            <div class="single-pro-details">
+            <div id="${productId}" class="single-pro-details">
             <h6>${productData.brand}</h6>
             <h4>${productData.name}</h4>
             <h2>$${productData.price}</h2>
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', async function() {
      });
  
 
-     async function addToCart(item) {
+     async function addToCart(item, productId) {
         try {
             const sizeSelect = document.querySelector('.single-pro-details select');
             const selectedSize = sizeSelect.options[sizeSelect.selectedIndex].text;
@@ -217,6 +217,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     
             // Construct the cart item object with relevant data
             const cartItem = {
+                id: productId,
                 name: item.name,
                 price: item.price,
                 image: item.image,
@@ -259,6 +260,7 @@ document.addEventListener('DOMContentLoaded', async function() {
          const productName = document.querySelector('.single-pro-details h4').textContent;
          const productPrice = document.querySelector('.single-pro-details h2').textContent;
          const productImage = document.querySelector('.single-pro-image img').src;
+         const productId = document.querySelector('.single-pro-details').id;
  
          
          const product = {
@@ -268,7 +270,7 @@ document.addEventListener('DOMContentLoaded', async function() {
          };
  
     
-         addToCart(product);
+         addToCart(product, productId);
      });
 
     } catch (error) {
@@ -280,7 +282,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 function displayCartItems(cartItems) {
     const dropdownCart = document.querySelector('.dropdown-cart');
-    dropdownCart.innerHTML = ''; // Clear previous items
+    dropdownCart.innerHTML = ''; 
     if (Array.isArray(cartItems)) {
         cartItems.forEach(item => {
             const cartItemHtml = `

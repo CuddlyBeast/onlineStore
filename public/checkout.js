@@ -1,9 +1,9 @@
 let totalPrice;
 const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+let discount = JSON.parse(localStorage.getItem('discount')) || 0;
 
 document.addEventListener('DOMContentLoaded', function() {
     const cartTotal = JSON.parse(localStorage.getItem('cartTotal'));
-    const discount = JSON.parse(localStorage.getItem('discount')) || 0;
 
     let subtotal = cartTotal.subtotal;
     let deliveryCost = calculateDeliveryCost('Standard'); 
@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     cartItems.forEach(item => {
         const imgSrc = item.image;
         const name = item.name;
+        const size = item.size;
         const price = parseFloat(item.price.slice(1)); 
         const quantity = item.quantity;
         const returnPrice = price * quantity;
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="info">
                 <div class="name">${name}</div>
                 <div class="price">${price}</div>
+                <div class="size">${size}</div>
             </div>
             <div class="quantity">${quantity}</div>
             <div class="returnPrice">${returnPrice.toFixed(2)}</div>
@@ -37,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const deliveryTypeSelect = document.getElementById('deliveryType');
     deliveryTypeSelect.addEventListener('change', function() {
         const deliveryCost = calculateDeliveryCost(deliveryTypeSelect.value);
-        const totalPrice = subtotal - discount + deliveryCost;
+        totalPrice = subtotal - discount + deliveryCost;
         updateTotal(subtotal, discount, totalPrice);
 
         const deliveryRowTotalPrice = document.querySelector('.return .row:nth-child(2) .totalPrice');
@@ -46,11 +48,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function calculateDeliveryCost(deliveryType) {
-    if (deliveryType === 'Standard') {
+    if (deliveryType === 'Free Standard') {
         return 0;
-    } else if (deliveryType === 'Next Day') {
+    } else if (deliveryType === '$5.95 Next Day') {
         return 5.95;
-    } else if (deliveryType === 'Instant') {
+    } else if (deliveryType === '$7.95 Instant') {
         return 7.95;
     }
     return 0; 
@@ -74,19 +76,18 @@ document.querySelector('.buttonCheckout').addEventListener('click', async functi
     const deliveryType = document.getElementById('deliveryType').value;
   
     const cardNumber = document.querySelector('.card-number-input').value;
-    
 
     const orderData = {
-        totalAmount: totalPrice, 
+        totalAmount: totalPrice.toFixed(2), 
         orderStatus: 'pending', 
-        paymentInformation: cardNumber,
+        paymentInformation: `card ending in: ${cardNumber.toString().slice(-4)}`,
         deliveryType,
+        discount: discount.toFixed(2),
         address,
         city,
         postcode,
         country
     };
-    console.log(orderData)
 
     try {
         const orderResponse = await submitOrder(orderData);
@@ -105,8 +106,6 @@ document.querySelector('.buttonCheckout').addEventListener('click', async functi
 
 async function submitOrder(orderData) {
     const token = localStorage.getItem('token');
-
-    console.log(token)
 
     try {
         const response = await fetch('http://localhost:3000/cuddy/order', {
@@ -133,21 +132,35 @@ async function addOrderDetails(orderId, orderDetails) {
     const token = localStorage.getItem('token');
 
     try {
-        const response = await fetch(`http://localhost:3000/cuddy/order/${orderId}/details`, {
-            method: 'POST',
-            body: JSON.stringify(orderDetails),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
 
-        if (!response.ok) {
-            throw new Error('Failed to add order details');
+        const formattedOrderDetails = orderDetails.map(({ id, quantity, price, size }) => ({
+            productId: parseInt(id),
+            quantity,
+            price: parseFloat(price.replace('$', '')),
+            size
+        }));
+
+        const promises = formattedOrderDetails.map(orderItem => 
+            fetch(`http://localhost:3000/cuddy/order/${orderId}/details`, {
+                method: 'POST',
+                body: JSON.stringify(orderItem),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+        );
+
+        const responses = await Promise.all(promises);
+
+        for (const response of responses) {
+            if (!response.ok) {
+                throw new Error('Failed to add order details');
+            }
         }
 
-        const data = await response.json();
-        console.log(data);
+        const responseData = await Promise.all(responses.map(response => response.json()));
+        console.log(responseData);
     } catch (error) {
         console.error('Error adding order details:', error);
     }

@@ -164,6 +164,29 @@ router.delete("/profile", authenticateCustomer, async (req, res) => {
   }
 });
 
+// Token Checker
+router.post('/verifyToken', async (req, res) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+
+  if (!token) {
+    return res.status(401).json({ error: 'Unauthorized - Missing token' });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, 'ssfdsfhccrthghafdethgv');
+    const customer = await Customer.findByPk(decodedToken.id);
+
+    if (!customer) {
+      return res.status(401).json({ error: 'Unauthorized - Invalid customer' });
+    }
+
+    res.status(200).json({ message: 'Token is valid' });
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ error: 'Unauthorized - Invalid token' });
+  }
+});
+
 module.exports = router;
 
 

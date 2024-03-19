@@ -1095,6 +1095,7 @@ footer .copyright{
     border-radius: 20px;
     padding: 40px;
     color: black;
+    max-height: 1125px; 
 }
 
 .checkout .list img{
@@ -1151,6 +1152,7 @@ footer .copyright{
     font-weight: bold;
     color: #fff;
     background-color: #b89ee7;
+    cursor: pointer;
 }
 
 .returnCart h1{
@@ -1164,7 +1166,7 @@ footer .copyright{
 
 .returnCart .item{
     display: grid;
-    grid-template-columns: 80px 1fr 50px 80px;
+    grid-template-columns: 80px .6fr 50px 80px;
     align-items: center;
     gap: 20px;
     margin-bottom: 30px;

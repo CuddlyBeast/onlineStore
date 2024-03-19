@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     orderStatus: DataTypes.STRING,
     paymentInformation: DataTypes.STRING,
     deliveryType: DataTypes.STRING,
+    discount: DataTypes.DECIMAL,
     address: DataTypes.STRING,
     city: DataTypes.STRING,
     postcode: DataTypes.STRING,

@@ -9,7 +9,7 @@ const router = express.Router();
 // Place Order
 router.post("/order", authenticateCustomer, async (req, res) => {
     try {
-        const { totalAmount, orderStatus, paymentInformation, deliveryType, address, city, postcode, country } = req.body; // Maybe make orderStatus default pending then after set time change
+        const { totalAmount, orderStatus, paymentInformation, deliveryType, discount, address, city, postcode, country } = req.body; // Maybe make orderStatus default pending then after set time change
         const customerId = req.customer.id;
         
 
@@ -19,6 +19,7 @@ router.post("/order", authenticateCustomer, async (req, res) => {
             orderStatus,
             paymentInformation,
             deliveryType,
+            discount,
             address,
             city,
             postcode,
@@ -35,6 +36,7 @@ router.post("/order", authenticateCustomer, async (req, res) => {
             orderStatus: newOrder.orderStatus,
             paymentInformation: newOrder.paymentInformation,
             deliveryType: newOrder.deliveryType,
+            discount: newOrder.discount,
             address: newOrder.address,
             city: newOrder.city,
             postcode: newOrder.postcode,

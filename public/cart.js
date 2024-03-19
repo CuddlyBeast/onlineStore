@@ -30,18 +30,40 @@ function updateCheckoutButton(total) {
     }
 }
 
-checkout.addEventListener("click", () => {
-    if (parseFloat(document.getElementById('total').textContent.slice(1)) > 0) {
+checkout.addEventListener("click", async () => {
+    const token = localStorage.getItem('token');
 
-        const discount = parseFloat(document.getElementById('discount').textContent.slice(2));
+    const totalAmount = parseFloat(document.getElementById('total').textContent.slice(1));
 
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-        localStorage.setItem('cartTotal', JSON.stringify({ subtotal: calculateSubtotal(cartItems), total }));
-        localStorage.setItem('discount', JSON.stringify(discount));
+    if (totalAmount > 0 && token) {
+        try {
+            const response = await fetch('http://localhost:3000/cuddy/verifyToken', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
 
-        window.location.href = "/checkout";
+            if (response.ok) {
+                const discount = parseFloat(document.getElementById('discount').textContent.slice(2));
+
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                localStorage.setItem('cartTotal', JSON.stringify({ subtotal: calculateSubtotal(cartItems), total }));
+                localStorage.setItem('discount', JSON.stringify(discount));
+
+                window.location.href = "/checkout";
+            } else {
+                window.location.href = "/authenticate";
+            }
+        } catch (error) {
+            console.error('Error verifying token:', error);
+        }
+    } else {
+        window.location.href = "/authenticate";
     }
 });
+
 
 
 document.addEventListener('DOMContentLoaded', async function() {
