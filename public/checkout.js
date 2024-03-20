@@ -45,6 +45,30 @@ document.addEventListener('DOMContentLoaded', function() {
         const deliveryRowTotalPrice = document.querySelector('.return .row:nth-child(2) .totalPrice');
         deliveryRowTotalPrice.textContent = deliveryCost === 0 ? 'Free' : `$${deliveryCost.toFixed(2)}`;
     });
+
+    const submitButton = document.querySelector('.buttonCheckout');
+    const monthInput = document.querySelector('.month-input');
+    const yearInput = document.querySelector('.year-input');
+    const monthNotification = document.querySelector('.month-input + .notification');
+    const yearNotification = document.querySelector('.year-input + .notification');
+    
+    submitButton.disabled = true;
+
+
+    function checkValidity() {
+        if (monthInput.value !== 'month' && yearInput.value !== 'year') {
+            submitButton.disabled = false;
+            monthNotification.style.display = 'none';
+            yearNotification.style.display = 'none';
+        } else {
+            submitButton.disabled = true;
+            monthNotification.style.display = 'block';
+            yearNotification.style.display = 'block';
+        }
+    }
+
+    monthInput.addEventListener('change', checkValidity);
+    yearInput.addEventListener('change', checkValidity);
 });
 
 function calculateDeliveryCost(deliveryType) {
@@ -68,7 +92,9 @@ function updateTotal(subtotal, discount, totalPrice) {
 
 
 // Form Info For Placing Order with Order Details
-document.querySelector('.buttonCheckout').addEventListener('click', async function() {
+document.getElementById('checkoutForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
     const address = document.getElementById('address').value;
     const city = document.getElementById('city').value;
     const country = document.getElementById('country').value;
@@ -93,6 +119,13 @@ document.querySelector('.buttonCheckout').addEventListener('click', async functi
         const orderResponse = await submitOrder(orderData);
         const orderId = orderResponse.Order.id;
         await addOrderDetails(orderId, cartItems);
+
+        localStorage.removeItem('cartItems');
+        localStorage.removeItem('cartTotal');
+        localStorage.removeItem('discount');
+
+        alert('Order placed successfully!');
+
         window.location.href = "/"
     } catch (error) {
         console.error('Error', error);

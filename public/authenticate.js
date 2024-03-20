@@ -36,7 +36,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 localStorage.setItem('token', data.token);
 
-                window.location.href = '/';
+                const referrer = document.referrer;
+                if (referrer.includes('/cart')) {
+                    window.location.href = '/checkout'; 
+                } else {
+                    window.location.href = '/'; 
+                }
             } else {
                 displayMessage(`Login failed`, false, 'login');
             }

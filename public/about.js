@@ -102,3 +102,32 @@ function saveCartItemsToStorage(cartItems) {
 function getCartItemsFromStorage() {
     return JSON.parse(localStorage.getItem('cartItems')) || [];
 }
+
+
+const logoutButton = document.getElementById('logout'); 
+
+logoutButton.addEventListener('click', async function(event) { 
+    event.preventDefault(); 
+
+    try {
+        const response = await fetch('http://localhost:3000/cuddy/logout', { 
+            method: 'POST',
+            credentials: 'include', // Include cookies in the request
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            localStorage.removeItem('cartItems');
+            localStorage.removeItem('cartTotal');
+            localStorage.removeItem('discount');
+
+            window.location.href = '/'; 
+        } else {
+            console.error('Logout failed');
+        }
+    } catch (error) {
+        console.error('Logout Error:', error);
+    }
+});

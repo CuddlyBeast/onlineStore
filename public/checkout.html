@@ -12,121 +12,125 @@
         <a href="#"><img src="img/logo.png" class="logo"></a>
         <h1>CHECKOUT</h1>
     </section>
-    <div class="checkoutLayout">
-        <div class="left">
-            <div class="form">
-                <h3>Deliver/Billing Address:</h3>
-                <div class="group">
-                    <label for="address">ADDRESS</label>
-                    <input type="text" name="address" id="address" required>
-                </div>
-                <div class="group">
-                    <label for="city">CITY</label>
-                    <input type="text" name="city" id="city" required>
-                </div>
-                <div class="group">
-                    <label for="country">COUNTRY</label>
-                    <input type="text" name="country" id="country" required>
-                </div>
-                <div class="group">
-                    <label for="postcode">POSTCODE</label>
-                    <input type="text" name="postcode" id="postcode" pattern="[A-Za-z]{1,2}[0-9][A-Za-z0-9]? [0-9][A-Za-z]{2}" required>
-                </div>
-                <div class="group">
-                    <label for="deliveryType">Delivery Type</label>
-                    <select name="deliveryType" id="deliveryType" required>
-                        <option value="" selected disabled>Choose..</option>
-                        <option value="Free Standard">Free Standard</option>
-                        <option value="$5.95 Next Day">$5.95 Next Day</option>
-                        <option value="$7.95 Instant">$7.95 Instant</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form">
-                <h3 class="form-header">Payment Details:</h3>
-                <div class="group">
-                    <label for="">CARD NUMBER</label>
-                    <input type="text" maxlength="16" minlength="16" class="card-number-input" pattern="[0-9]*" required>
-                </div>
-                <div class="group">
-                    <label for="">CARD HOLDER</label>
-                    <input type="text" class="card-holder-input" required>
-                </div>
-                <div class="group">
-                    <label for="">EXPIRATION MM</label>
-                    <select name="" id="" class="month-input" required>
-                        <option value="month" selected disabled>month</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                    </select>
-                </div>
-                <div class="group">
-                    <label for="">EXPIRATION YY</label>
-                    <select name="" id="" class="year-input" required>
-                        <option value="year" selected disabled>year</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                        <option value="2028">2028</option>
-                        <option value="2029">2029</option>
-                        <option value="2030">2030</option>
-                        <option value="2031">2031</option>
-                    </select>
-                </div>
-                <div class="group">
-                    <label for="">CVV</label>
-                    <input type="text" maxlength="3" class="cvv-input" pattern="[0-9]*" required>
-                </div>
-            </div>
-            <div class="return">
-                <div class="row">
-                    <div>Cart Subtotal</div>
-                    <div class="totalPrice">$0.00</div>
-                </div>
-                <div class="row">
-                    <div>Delivery</div>
-                    <div class="totalPrice">Free</div>
-                </div>
-                <div class="row">
-                    <div>Discount</div>
-                    <div class="totalPrice">$0.00</div>
-                </div>
-                <div class="row">
-                    <div>Total Price</div>
-                    <div class="totalPrice">$0.00</div>
-                </div>
-            </div>
-            <button class="buttonCheckout">
-                CHECKOUT
-            </button>
-        </div>
-        <div class="returnCart">
-            <a href="/" class="return-button"><ion-icon name="storefront-outline"></ion-icon>Continue Shopping</a>
-            <h1>Items</h1>
-            <div class="list">
-                <!-- <div class="item">
-                    <img src="img/products/f1.jpg" alt="">
-                    <div class="info">
-                        <div class="name">Product 1</div>
-                        <div class="price">$5.39</div>
+    <form id="checkoutForm">
+        <div class="checkoutLayout">
+            <div class="left">
+                <div id="deliveryForm" class="form">
+                    <h3>Deliver/Billing Address:</h3>
+                    <div class="group">
+                        <label for="address">ADDRESS</label>
+                        <input type="text" name="address" id="address" required>
                     </div>
-                    <div class="quantity">2</div>
-                    <div class="returnPrice">$10.78</div>
-                </div> -->
+                    <div class="group">
+                        <label for="city">CITY</label>
+                        <input type="text" name="city" id="city" required>
+                    </div>
+                    <div class="group">
+                        <label for="country">COUNTRY</label>
+                        <input type="text" name="country" id="country" required>
+                    </div>
+                    <div class="group">
+                        <label for="postcode">POSTCODE</label>
+                        <input type="text" name="postcode" id="postcode" pattern="[A-Za-z]{1,2}[0-9][A-Za-z0-9]? [0-9][A-Za-z]{2}" required title="Enter a valid postcode, e.g., AB1 2CD">
+                    </div>
+                    <div class="group">
+                        <label for="deliveryType">Delivery Type</label>
+                        <select name="deliveryType" id="deliveryType" required>
+                            <option value="" selected disabled>Choose..</option>
+                            <option value="Free Standard">Free Standard</option>
+                            <option value="$5.95 Next Day">$5.95 Next Day</option>
+                            <option value="$7.95 Instant">$7.95 Instant</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="paymentForm" class="form">
+                    <h3 class="form-header">Payment Details:</h3>
+                    <div class="group">
+                        <label for="">CARD NUMBER</label>
+                        <input type="text" maxlength="16" minlength="16" class="card-number-input" pattern="[0-9]*" required>
+                    </div>
+                    <div class="group">
+                        <label for="">CARD HOLDER</label>
+                        <input type="text" class="card-holder-input" required>
+                    </div>
+                    <div class="group">
+                        <label for="">EXPIRATION MM</label>
+                        <select name="" id="" class="month-input" required>
+                            <option value="month" selected disabled>month</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <span class="notification">Please select a month</span>
+                    </div>
+                    <div class="group">
+                        <label for="">EXPIRATION YY</label>
+                        <select name="" id="" class="year-input" required>
+                            <option value="year" selected disabled>year</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                            <option value="2031">2031</option>
+                        </select>
+                        <span class="notification">Please select a year</span>
+                    </div>
+                    <div class="group">
+                        <label for="">CVV</label>
+                        <input type="text" maxlength="3" class="cvv-input" pattern="[0-9]*" required>
+                    </div>
+                </div>
+                <div class="return">
+                    <div class="row">
+                        <div>Cart Subtotal</div>
+                        <div class="totalPrice">$0.00</div>
+                    </div>
+                    <div class="row">
+                        <div>Delivery</div>
+                        <div class="totalPrice">Free</div>
+                    </div>
+                    <div class="row">
+                        <div>Discount</div>
+                        <div class="totalPrice">$0.00</div>
+                    </div>
+                    <div class="row">
+                        <div>Total Price</div>
+                        <div class="totalPrice">$0.00</div>
+                    </div>
+                </div>
+                <button type="submit" class="buttonCheckout">
+                    CHECKOUT
+                </button>
+            </div>
+            <div class="returnCart">
+                <a href="/" class="return-button"><ion-icon name="storefront-outline"></ion-icon>Continue Shopping</a>
+                <h1>Items</h1>
+                <div class="list">
+                    <!-- <div class="item">
+                        <img src="img/products/f1.jpg" alt="">
+                        <div class="info">
+                            <div class="name">Product 1</div>
+                            <div class="price">$5.39</div>
+                        </div>
+                        <div class="quantity">2</div>
+                        <div class="returnPrice">$10.78</div>
+                    </div> -->
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

@@ -75,14 +75,12 @@ document.addEventListener('DOMContentLoaded', async function() {
             throw new Error('Product ID not found in URL.');
         }    
 
-        // Fetch specific product data using the product ID
         const response = await fetch(`http://localhost:3000/cuddy/products/${productId}`);
         if (!response.ok) {
             throw new Error('Failed to fetch product data');
         }
         const productData = await response.json();
 
-        // Generate HTML using the product image
         const productHtml = `
             <div class="single-pro-image">
                 <img src="${productData.image}" width="100%" id="MainImg" alt="">
@@ -215,7 +213,6 @@ document.addEventListener('DOMContentLoaded', async function() {
             const selectedQuantity = parseInt(quantityInput.value);
             const totalPrice = (parseFloat(item.price.replace('$', '')) * selectedQuantity).toFixed(2);
     
-            // Construct the cart item object with relevant data
             const cartItem = {
                 id: productId,
                 name: item.name,
@@ -226,7 +223,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                 totalPrice: totalPrice
             };
     
-            // Retrieve cart items from localStorage
             let cartItems = getCartItemsFromStorage();
     
             // Check if the same item already exists in the cart
@@ -239,14 +235,11 @@ document.addEventListener('DOMContentLoaded', async function() {
                 cartItems[existingCartItemIndex].quantity += selectedQuantity;
                 cartItems[existingCartItemIndex].totalPrice = (parseFloat(cartItems[existingCartItemIndex].price.replace('$', '')) * cartItems[existingCartItemIndex].quantity).toFixed(2);
             } else {
-                // If the item is new, add it to the cart
                 cartItems.push(cartItem);
             }
     
-            // Save updated cart items to localStorage
             saveCartItemsToStorage(cartItems);
     
-            // Display cart items
             displayCartItems(cartItems);
         } catch (error) {
             console.error('Error adding item to cart:', error);
@@ -303,13 +296,10 @@ function displayCartItems(cartItems) {
                 cartItem.remove();
                 updateCartBadgeCount(dropdownCart.childElementCount);
 
-                 // Retrieve cart items from localStorage
                  let updatedCartItems = getCartItemsFromStorage();
                 
-                 // Remove the item from the cart items array
                  updatedCartItems = updatedCartItems.filter(cartItem => cartItem.name !== item.name || cartItem.size !== item.size);
                  
-                 // Save updated cart items to localStorage
                  saveCartItemsToStorage(updatedCartItems);
             });
         });
@@ -329,3 +319,32 @@ function displayCartItems(cartItems) {
     updateCartBadgeCount(cartItems.length);
     saveCartItemsToStorage(cartItems)
 }
+
+
+const logoutButton = document.getElementById('logout'); 
+
+logoutButton.addEventListener('click', async function(event) { 
+    event.preventDefault(); 
+
+    try {
+        const response = await fetch('http://localhost:3000/cuddy/logout', { 
+            method: 'POST',
+            credentials: 'include', // Include cookies in the request
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            localStorage.removeItem('cartItems');
+            localStorage.removeItem('cartTotal');
+            localStorage.removeItem('discount');
+
+            window.location.href = '/'; 
+        } else {
+            console.error('Logout failed');
+        }
+    } catch (error) {
+        console.error('Logout Error:', error);
+    }
+});
