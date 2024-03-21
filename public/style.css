@@ -1236,6 +1236,54 @@ footer .copyright{
     justify-content: center;
 }
 
+/* Order History */
+
+#order-history {
+    padding: 50px 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.order-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.order-item {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-item h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.order-item p {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.order-item .details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-item .details span {
+    font-weight: bold;
+}
 
 /* Media Query */
 

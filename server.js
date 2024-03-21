@@ -68,6 +68,9 @@ app.get('/authenticate', (req, res, next) => {
 app.get('/checkout', (req, res, next) => {
     res.sendFile(path.join(__dirname, "public", "checkout.html"));
 });
+app.get('/orders', (req, res, next) => {
+    res.sendFile(path.join(__dirname, "public", "orders.html"));
+});
 
 
 

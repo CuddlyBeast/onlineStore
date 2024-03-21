@@ -308,6 +308,7 @@ logoutButton.addEventListener('click', async function(event) {
         });
 
         if (response.ok) {
+            localStorage.removeItem('token'); 
             localStorage.removeItem('cartItems');
             localStorage.removeItem('cartTotal');
             localStorage.removeItem('discount');

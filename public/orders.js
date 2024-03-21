@@ -81,52 +81,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         return emailRegex.test(email);
     }
 
-    const mapIframe = document.createElement('iframe');
-    mapIframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2470.0391704655867!2d-1.263353923088802!3d51.75060729290687!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4876c6a580aad8f9%3A0xbf7a512fe5a34b01!2sZARA!5e0!3m2!1sen!2suk!4v1708454069254!5m2!1sen!2suk";
-    mapIframe.width = "600";
-    mapIframe.height = "450";
-    mapIframe.style.border = "0";
-    mapIframe.allowfullscreen = "";
-    mapIframe.loading = "lazy";
-    mapIframe.referrerpolicy = "no-referrer-when-downgrade";
-
-
-    const mapContainer = document.querySelector('.map');
-    mapContainer.appendChild(mapIframe);
-
-    let formDetailsSection = ''
-
-
-
-     formDetailsSection += `
-        <form action="https://api.web3forms.com/submit" method="POST">
-            <span>LEAVE A MESSAGE</span>
-            <h2>We would love to hear from you</h2>
-            <input type="hidden" name="access_key" value="f242d71e-a659-4ac4-baa9-c70ccd040c58">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
-            <button type="submit" class="normal">Submit</button>
-        </form>
-        
-        <div class="people">
-            <div>
-                <img src="img/people/1.png" alt="">
-                <p><span>John Doe</span> Senior Marketing Manager <br> Phone: 44+ 01223 435426 <br>Email: pickme@gmail.com</p>
-            </div>
-            <div>
-                <img src="img/people/2.png" alt="">
-                <p><span>Dohn Joe</span> Senior Marketing Manager <br> Phone: 44+ 01223 435426 <br>Email: pickme@gmail.com</p>
-            </div>
-            <div>
-                <img src="img/people/3.png" alt="">
-                <p><span>Josephine Doe</span> Senior Marketing Manager <br> Phone: 44+ 01223 435426 <br>Email: pickme@gmail.com</p>
-            </div>
-        </div>
-        
-    `;
-
-    document.getElementById('form-details').innerHTML = formDetailsSection;
 
 
     cartItems = getCartItemsFromStorage();
