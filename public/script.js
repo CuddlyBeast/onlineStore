@@ -81,7 +81,13 @@ document.addEventListener('DOMContentLoaded', async function() {
                 });
 
                 if (response.ok) {
-                    showProfileDropdownContent(); 
+                    profileIcon.addEventListener('mouseenter', () => {
+                        showProfileDropdownContent();
+                    });
+                    
+                    profileIcon.addEventListener('mouseleave', () => {
+                        hideProfileDropdownContent();
+                    });
                 } else {
                     hideProfileDropdownContent(); 
                 }
@@ -95,14 +101,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     };
 
     await toggleProfileDropdownContent();
-
-    profileIcon.addEventListener('mouseenter', () => {
-        showProfileDropdownContent();
-    });
-    
-    profileIcon.addEventListener('mouseleave', () => {
-        hideProfileDropdownContent();
-    });
 
     try {
         const response = await fetch('http://localhost:3000/cuddy/products');
@@ -269,6 +267,7 @@ logoutButton.addEventListener('click', async function(event) {
         });
 
         if (response.ok) {
+            localStorage.removeItem('token'); 
             localStorage.removeItem('cartItems');
             localStorage.removeItem('cartTotal');
             localStorage.removeItem('discount');

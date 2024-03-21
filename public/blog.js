@@ -16,6 +16,52 @@ if (close) {
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
+    const profileIcon = document.querySelector('.profile-dropdown');
+    const profileDropdownContent = document.querySelector('.profile-dropdown-content');
+    const token = localStorage.getItem('token');
+
+    const showProfileDropdownContent = () => {
+        profileDropdownContent.style.display = 'block'; 
+    };
+
+    const hideProfileDropdownContent = () => {
+        profileDropdownContent.style.display = 'none'; 
+    };
+
+    const toggleProfileDropdownContent = async () => {
+        if (token) {
+            try {
+                const response = await fetch('http://localhost:3000/cuddy/verifyToken', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    profileIcon.addEventListener('mouseenter', () => {
+                        showProfileDropdownContent();
+                    });
+                    
+                    profileIcon.addEventListener('mouseleave', () => {
+                        hideProfileDropdownContent();
+                    });
+                } else {
+                    hideProfileDropdownContent(); 
+                }
+            } catch (error) {
+                console.error('Error verifying token:', error);
+                hideProfileDropdownContent();
+            }
+        } else {
+            hideProfileDropdownContent();
+        }
+    };
+
+    await toggleProfileDropdownContent();
+
+
     const newsletterButton = document.getElementById('newsletterButton');
 
 
