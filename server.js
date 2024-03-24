@@ -85,7 +85,7 @@ app.use('/cuddy', orderDetailRoutes);
 
 app.use((err, req, res, next) => {
     console.log(err.stack);
-    res.status(500).send('Something went Wrong!');
+    res.status(500).send('Something went wrong!');
 });
 
 const PORT = process.env.PORT || 3000;
