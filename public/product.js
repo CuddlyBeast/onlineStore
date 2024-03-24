@@ -396,3 +396,4 @@ logoutButton.addEventListener('click', async function(event) {
         console.error('Logout Error:', error);
     }
 });
+

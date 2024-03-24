@@ -205,3 +205,10 @@ body {
 .return-button ion-icon {
     margin-right: 5px; 
 }
+
+.display-message{
+    font-size: 20px;
+    font-weight: 550;
+    text-align: center;
+    margin-top: 10px;
+}

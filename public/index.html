@@ -10,7 +10,7 @@
 <body>
     
     <section id="header">
-        <a href="#"><img src="img/logo.png" class="logo"></a>
+        <a href="/"><img src="img/logo.png" class="logo"></a>
 
         <div>
             <ul id="navbar">
@@ -25,9 +25,9 @@
                 </div>
                 <li id="lg-bag" class="profile-dropdown"><a href="/authenticate"><i class='bx bx-user'></i></a>
                     <div class="profile-dropdown-content">
-                       <a href="#">Profile</a>
-                       <a href="/orders">Orders</a>
-                       <a id="logout">Logout</a>
+                        <a href="/profile">Profile</a>
+                        <a href="/orders">Orders</a>
+                        <a id="logout">Logout</a>
                     </div>
                 </li>
                 <a href="#" id="close"><i class="bx bx-x"></i></a>
@@ -38,6 +38,13 @@
             <div class="dropdown-cart">
                    
             </div>
+            <li class="profile-dropdown"><a href="/authenticate"><i class='bx bx-user'></i></a>
+                <div class="profile-dropdown-content">
+                    <a href="/profile">Profile</a>
+                    <a href="/orders">Orders</a>
+                    <a id="logout">Logout</a>
+                </div>
+            </li>
             <i id="bar" class="bx bx-menu"></i>
         </div>
     </section>
@@ -165,8 +172,8 @@
             <h4>About</h4>
             <a href="/about">About us</a>
             <a href="/cart">Delivery Information</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
+            <a href="/contact">Privacy Policy</a>
+            <a href="/about">Terms & Conditions</a>
             <a href="/contact">Contact Us</a>
         </div>
 
@@ -174,9 +181,9 @@
             <h4>My Account</h4>
             <a href="/authenticate">Sign In</a>
             <a href="/cart">View Cart</a>
-            <a href="#">My Wishlist</a>
-            <a href="#">Track My Order</a>
-            <a href="#">Help</a>
+            <a href="/profile">My Profile</a>
+            <a href="/orders">Track My Order</a>
+            <a href="/contact">Help</a>
         </div>
 
         <div class="col install">

@@ -103,10 +103,10 @@ router.get('/customers', isAdmin, async (req, res) => {
   }
 });
 
-// Admin: Get Customer by ID
-router.get('/customers/:id', isAdmin, async (req, res) => {
+// Profile~ Get Customer by ID
+router.get('/customer', authenticateCustomer, async (req, res) => {
   try {
-    const customerId = req.params.id;
+    const customerId = req.customer.id;
     const customer = await Customer.findOne({ where: { id: customerId } });
     res.status(200).send(customer)
   } catch (error) {
@@ -118,14 +118,17 @@ router.get('/customers/:id', isAdmin, async (req, res) => {
 router.put("/profile", authenticateCustomer,  async (req, res) => {
   try {
       
-      const { name,	email, address, mobile } = req.body
+      const { name,	email, address, mobile, password } = req.body
       const customerId = req.customer.id;
+
+      const hashedPassword = await bcrypt.hash(password, 10);
 
       const [rowsAffected, [updatedCustomer]] = await Customer.update({
         name,
         email,
         address,
         mobile,
+        password: hashedPassword,
       }, {
         where: {
          id: customerId 

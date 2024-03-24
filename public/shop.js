@@ -1,3 +1,20 @@
+const bar = document.getElementById('bar');
+const close = document.getElementById('close');
+const nav = document.getElementById('navbar');
+
+if (bar) {
+    bar.addEventListener('click', () => {
+        nav.classList.add('active');
+    })
+}
+
+if (close) {
+    close.addEventListener('click', () => {
+        nav.classList.remove('active')
+    })
+}
+
+
 const productContainer = document.querySelector('.pro-container');
 const paginationContainer = document.getElementById('pagination');
 let currentPage = 1;

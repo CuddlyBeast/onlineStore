@@ -40,8 +40,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     orderItem.classList.add('order-item');
 
                     orderItem.innerHTML = `
-                        <h3>Order #${order.id}</h3> 
-                        <button class="delete-order" data-order-id="${order.id}"><i class='bx bx-trash'></i></button>
+                        <h3>Order #${order.id}  <button class="delete-order" data-order-id="${order.id}"><i class='bx bx-trash'></i></button></h3>
                         <span>Order Status: ${order.orderStatus}</span>
                         <p>Time of Purchase: ${order.createdAt.slice(11, 19)} | ${order.createdAt.slice(0, 10)}</p>
                         <p>Delivery/Billing Address: ${order.address}, ${order.city}, ${order.postcode},  ${order.country}</p>
@@ -106,6 +105,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                             if (!response.ok) {
                                 throw new Error('Failed to delete order');
                             }
+                            
                             location.reload();
                         } catch (error) {
                             console.error('Error deleting order:', error);
@@ -125,8 +125,24 @@ document.addEventListener('DOMContentLoaded', async function() {
                    // Set the timeout to hide the delete button after five minutes since the order was made
                    const timeLimit = 300000;
                    const timeRemaining = Math.max(timeLimit - timeElapsed, 0);
-                   setTimeout(() => {
-                       button.style.display = 'none';
+
+                   setTimeout( async () => {
+                        button.style.display = 'none';
+
+                        const updateResponse = await fetch(`http://localhost:3000/cuddy/order/${orderId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                orderStatus: 'Delivered' 
+                            })
+                        });
+                        if (!updateResponse.ok) {
+                            console.error('Failed to update order status');
+                        }
+
                    }, timeRemaining);
                });
             } else {

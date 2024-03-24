@@ -71,6 +71,9 @@ app.get('/checkout', (req, res, next) => {
 app.get('/orders', (req, res, next) => {
     res.sendFile(path.join(__dirname, "public", "orders.html"));
 });
+app.get('/profile', (req, res, next) => {
+    res.sendFile(path.join(__dirname, "public", "profile.html"));
+});
 
 
 
