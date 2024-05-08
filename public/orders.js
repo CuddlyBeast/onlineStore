@@ -1,3 +1,5 @@
+const BASE_URL = 'https://cara-c12f08837620.herokuapp.com/';
+
 const bar = document.getElementById('bar');
 const close = document.getElementById('close');
 const nav = document.getElementById('navbar');
@@ -21,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     if (token) {
         try {
-            const response = await fetch('http://localhost:3000/cuddy/order/history', {
+            const response = await fetch(`${BASE_URL}cuddy/order/history`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                         <p>Total: <strong>$${order.totalAmount}</strong></p>
                         <div class="order-details-${order.id}"></div>
                     `;
-                    const orderDetailsResponse = await fetch(`http://localhost:3000/cuddy/order/${order.id}/details`, {
+                    const orderDetailsResponse = await fetch(`${BASE_URL}cuddy/order/${order.id}/details`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -62,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                         const orderDetailsContainer = orderItem.querySelector(`.order-details-${order.id}`);
 
                         for (const detail of orderDetails) {
-                            const productResponse = await fetch(`http://localhost:3000/cuddy/products/${detail.productId}`, {
+                            const productResponse = await fetch(`${BASE_URL}cuddy/products/${detail.productId}`, {
                                 method: 'GET',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -96,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     button.addEventListener('click', async () => {
                         const orderId = parseInt(button.dataset.orderId);
                         try {
-                            const response = await fetch(`http://localhost:3000/cuddy/order/${orderId}`, {
+                            const response = await fetch(`${BASE_URL}cuddy/order/${orderId}`, {
                                 method: 'DELETE',
                                 headers: {
                                     'Authorization': `Bearer ${token}`,
@@ -129,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                    setTimeout( async () => {
                         button.style.display = 'none';
 
-                        const updateResponse = await fetch(`http://localhost:3000/cuddy/order/${orderId}`, {
+                        const updateResponse = await fetch(`${BASE_URL}cuddy/order/${orderId}`, {
                             method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -169,7 +171,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const toggleProfileDropdownContent = async () => {
         if (token) {
             try {
-                const response = await fetch('http://localhost:3000/cuddy/verifyToken', {
+                const response = await fetch(`${BASE_URL}cuddy/verifyToken`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -295,7 +297,7 @@ logoutButton.addEventListener('click', async function(event) {
     event.preventDefault(); 
 
     try {
-        const response = await fetch('http://localhost:3000/cuddy/logout', { 
+        const response = await fetch(`${BASE_URL}cuddy/logout`, { 
             method: 'POST',
             credentials: 'include', // Include cookies in the request
             headers: {

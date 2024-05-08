@@ -1,3 +1,5 @@
+const BASE_URL = 'https://cara-c12f08837620.herokuapp.com/';
+
 // Swap between Sign-in And Sign-up Form
 
 const wrapper = document.querySelector('.wrapper')
@@ -23,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Login
     const handleLogin = async (email, password) => {
         try {
-            const response = await fetch('http://localhost:3000/cuddy/signin', {
+            const response = await fetch(`${BASE_URL}cuddy/signin`, {
                 method: 'POST',
                 body: JSON.stringify({ email, password }),
                 headers: {
@@ -72,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     
         try {
-            const response = await fetch('http://localhost:3000/cuddy/signup', {
+            const response = await fetch(`${BASE_URL}cuddy/signup`, {
                 method: 'POST',
                 body: JSON.stringify(jsonData),
                 headers: {

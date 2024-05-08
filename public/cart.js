@@ -1,3 +1,5 @@
+const BASE_URL = 'https://cara-c12f08837620.herokuapp.com/';
+
 const bar = document.getElementById('bar');
 const close = document.getElementById('close');
 const nav = document.getElementById('navbar');
@@ -37,7 +39,7 @@ checkout.addEventListener("click", async () => {
 
     if (totalAmount > 0 && token) {
         try {
-            const response = await fetch('http://localhost:3000/cuddy/verifyToken', {
+            const response = await fetch(`${BASE_URL}cuddy/verifyToken`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const toggleProfileDropdownContent = async () => {
         if (token) {
             try {
-                const response = await fetch('http://localhost:3000/cuddy/verifyToken', {
+                const response = await fetch(`${BASE_URL}cuddy/verifyToken`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -299,7 +301,7 @@ logoutButton.addEventListener('click', async function(event) {
     event.preventDefault(); 
 
     try {
-        const response = await fetch('http://localhost:3000/cuddy/logout', { 
+        const response = await fetch(`${BASE_URL}cuddy/logout`, { 
             method: 'POST',
             credentials: 'include', // Include cookies in the request
             headers: {

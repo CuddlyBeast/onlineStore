@@ -1,3 +1,5 @@
+const BASE_URL = 'https://cara-c12f08837620.herokuapp.com/';
+
 let totalPrice;
 const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 let discount = JSON.parse(localStorage.getItem('discount')) || 0;
@@ -141,7 +143,7 @@ async function submitOrder(orderData) {
     const token = localStorage.getItem('token');
 
     try {
-        const response = await fetch('http://localhost:3000/cuddy/order', {
+        const response = await fetch(`${BASE_URL}cuddy/order`, {
             method: 'POST',
             body: JSON.stringify(orderData),
             headers: {
@@ -174,7 +176,7 @@ async function addOrderDetails(orderId, orderDetails) {
         }));
 
         const promises = formattedOrderDetails.map(orderItem => 
-            fetch(`http://localhost:3000/cuddy/order/${orderId}/details`, {
+            fetch(`${BASE_URL}cuddy/order/${orderId}/details`, {
                 method: 'POST',
                 body: JSON.stringify(orderItem),
                 headers: {

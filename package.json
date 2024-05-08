@@ -4,7 +4,7 @@
   "description": "e-commerce website front and backend",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm test",
     "start": "node server.js"
   },
   "repository": {
@@ -26,6 +26,9 @@
     "express-session": "^1.18.0",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2",
+    "validator": "^13.11.0"
   }
 }

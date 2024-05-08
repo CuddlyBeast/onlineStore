@@ -1,3 +1,5 @@
+const BASE_URL = 'https://cara-c12f08837620.herokuapp.com/';
+
 const bar = document.getElementById('bar');
 const close = document.getElementById('close');
 const nav = document.getElementById('navbar');
@@ -21,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     if (token) {
         try {
-            const response = await fetch('http://localhost:3000/cuddy/customer', {
+            const response = await fetch(`${BASE_URL}cuddy/customer`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +66,7 @@ editProfileButton.addEventListener('click', async () => {
     const newMobile = prompt('Enter your new mobile number:');
 
     try {
-        const response = await fetch('http://localhost:3000/cuddy/profile', {
+        const response = await fetch(`${BASE_URL}cuddy/profile`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -94,7 +96,7 @@ changePasswordButton.addEventListener('click', async () => {
     const newPassword = prompt('Enter your new password:');
 
     try {
-        const response = await fetch('http://localhost:3000/cuddy/profile', {
+        const response = await fetch(`${BASE_URL}cuddy/profile`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -131,7 +133,7 @@ changePasswordButton.addEventListener('click', async () => {
     const toggleProfileDropdownContent = async () => {
         if (token) {
             try {
-                const response = await fetch('http://localhost:3000/cuddy/verifyToken', {
+                const response = await fetch(`${BASE_URL}cuddy/verifyToken`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -257,7 +259,7 @@ logoutButton.addEventListener('click', async function(event) {
     event.preventDefault(); 
 
     try {
-        const response = await fetch('http://localhost:3000/cuddy/logout', { 
+        const response = await fetch(`${BASE_URL}cuddy/logout`, { 
             method: 'POST',
             credentials: 'include', // Include cookies in the request
             headers: {
